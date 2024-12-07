@@ -3,7 +3,7 @@
 /*
 
 Переводит рабочие еденицы яркости (brightnessWorkMin <--> brightnessWorkMax) в проценты (0 <--> 100)
-Сохраняет предыдущее значение уровня в brightnessLevelSeved
+Сохраняет предыдущее значение уровня в brightnessSaved
 
 */
 
@@ -19,6 +19,6 @@ if ($brightnessWorkMin != $brightnessWorkMax) {
     $brightLevelWork = round($brightnessWorkMin + round(($brightnessWorkMax - $brightnessWorkMin) * $brightnessLevelNew / 100));
     $this->setProperty('brightnessWork', $brightLevelWork);
     if ($brightnessLevelNew > 0 && $this->getProperty('flag')) {
-        $this->setProperty('brightnessLevelSeved', $brightnessLevelNew);
+        $this->setProperty('brightnessSaved', $brightnessLevelNew);
     }
 }

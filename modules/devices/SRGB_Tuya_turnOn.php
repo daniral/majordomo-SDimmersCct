@@ -1,3 +1,5 @@
+<?php
+/*
 # **Ледлампа(RGB) с управлением яркостью и цветом.**
 ## **Простое устройство для MajorDomo.**  
 Добавление в MajorDomo простого устройства для Ледлампа(RGB) с управлением яркостью и цветом.   
@@ -86,3 +88,101 @@
 Меню будет называться по имени объекта. При желании можно изменить на любое другое.  
 
 Было проверено на Ледленте [Tuta Zigbee RGB light](https://www.zigbee2mqtt.io/devices/TS0503B.html "zigbee2mqtt.io")  
+
+*/
+
+if ($this->getProperty('dayBrightness') == '') $this->setProperty('dayBrightness', '100');
+if ($this->getProperty('dayColor') == '') $this->setProperty('dayColor', '#FFFFFF');
+if ($this->getProperty('nightBrightness') == '') $this->setProperty('nightBrightness', '10');
+if ($this->getProperty('nightColor') == '') $this->setProperty('nightColor', '#FFD700');
+if ($this->getProperty('brightnessWorkMin') == '') $this->setProperty('brightnessWorkMin', '0');
+if ($this->getProperty('brightnessWorkMax') == '') $this->setProperty('brightnessWorkMax', '254');
+if ($this->getProperty('timerOFF') == '') $this->setProperty('timerOFF', '120');
+if ($this->getProperty('presence') == '') $this->setProperty('presence', '0');
+if ($this->getProperty('dayBegin') == '') $this->setProperty('dayBegin', '08:00');
+if ($this->getProperty('nightBegin') == '') $this->setProperty('nightBegin', '18:00');
+if ($this->getProperty('autoOnOff') == '') $this->setProperty('autoOnOff', '1');
+if ($this->getProperty('flag') == '') $this->setProperty('flag', '0');
+if ($this->getProperty('illuminanceFlag') == '') $this->setProperty('illuminanceFlag', '0');
+if ($this->getProperty('illuminance') == '') $this->setProperty('illuminance', '0');
+if ($this->getProperty('illuminanceMax') == '') $this->setProperty('illuminanceMax', '0');
+if ($this->getProperty('bySensor') == '') $this->setProperty('bySensor', '0');
+if ($this->getProperty('byManually') == '') $this->setProperty('byManually', '1');
+if ($this->getProperty('bySunTime') == '') $this->setProperty('bySunTime', '0');
+if ($this->getProperty('workInDai') == '') $this->setProperty('workInDai', '2');
+if ($this->getProperty('addTimeSunrise') == '') $this->setProperty('addTimeSunrise', '00:00');
+if ($this->getProperty('addTimeSunset') == '') $this->setProperty('addTimeSunset', '00:00');
+if ($this->getProperty('signSunrise') == '') $this->setProperty('signSunrise', '1');
+if ($this->getProperty('signSunset') == '') $this->setProperty('signSunset', '1');
+if ($this->getProperty('sunriseTime') == '') $this->setProperty('sunriseTime', $this->getProperty('dayBegin'));
+if ($this->getProperty('sunsetTime') == '') $this->setProperty('sunsetTime', $this->getProperty('nightBegin'));
+
+
+if (isset($params['brightness']) &&  $params['brightness'] == 0) {
+  $this->callMethod('turnOff');
+  return;
+}
+
+$color = isset($params['color']) ? $params['color'] : 0;
+$brightness = isset($params['brightness']) && $params['brightness'] > 0 && $params['brightness'] <= 100 ? $params['brightness'] : 0;
+$dayNight = isset($params['dayNight']) && $params['dayNight'] == 1 ? 1 : 0;
+$brightnessSaved = $this->getProperty('brightnessSaved');
+$colorSaved = $this->getProperty('colorSaved');
+
+$dayBegin;
+$nightBegin;
+
+if (!$dayNight) {
+  $this->setProperty('flag', 1);
+  $this->setProperty('status', 1);
+  if ($color) {
+    $this->setProperty('color', $color);
+  } else if ($colorSaved) {
+    $this->setProperty('color', $colorSaved);
+  } else {
+    $this->setProperty('color', '#FFFFFF');
+  }
+
+  if ($brightness) {
+    $this->setProperty('brightness', $brightness);
+  } else if ($brightnessSaved) {
+    $this->setProperty('brightness', $brightnessSaved);
+  } else {
+    $this->setProperty('brightness', 100);
+  }
+}
+
+if ($dayNight && !$this->getProperty('flag')) {
+
+  if ($this->getProperty('bySunTime') && $this->getProperty('sunriseTime') != '' && $this->getProperty('sunsetTime') != '') {
+    $dayBegin = edit_time($this->getProperty('sunriseTime'), $this->getProperty('addTimeSunrise'), $this->getProperty('signSunrise'));
+    $nightBegin = edit_time($this->getProperty('sunsetTime'), $this->getProperty('addTimeSunset'), $this->getProperty('signSunset'));
+  } else if (!$this->getProperty('bySensor')) {
+    $dayBegin = $this->getProperty('dayBegin');
+    $nightBegin = $this->getProperty('nightBegin');
+  }
+  if ($this->getProperty('autoOnOff')) {
+    if (($this->getProperty('workInDai') == '2' || $this->getProperty('workInDai') == '0') && !$this->getProperty('bySensor') && timeBetween($nightBegin, $dayBegin)) {
+      $this->setProperty('brightness', $brightness ? $brightness : $this->getProperty('nightBrightness'));
+      $this->setProperty('color', $color ? $color : $this->getProperty('nightColor'));
+    } else if (($this->getProperty('workInDai') == '1' || $this->getProperty('workInDai') == '0') && !$this->getProperty('bySensor') && timeBetween($dayBegin, $nightBegin)) {
+      $this->setProperty('brightness', $brightness ? $brightness : $this->getProperty('dayBrightness'));
+      $this->setProperty('color', $color ? $color : $this->getProperty('dayColor'));
+    } else if (($this->getProperty('bySensor') && $this->getProperty('illuminance') <= $this->getProperty('illuminanceMax')) || $this->getProperty('illuminanceFlag')) {
+      $this->setProperty('brightness', $brightness ? $brightness : $this->getProperty('nightBrightness'));
+      $this->setProperty('color', $color ? $color : $this->getProperty('nightColor'));
+      $this->setProperty('illuminanceFlag', 1);
+    }
+    $this->callMethod('AutoOFF');
+  }
+  function edit_time($time, $addTime, $sign)
+  {
+    $part = explode(':', $addTime);
+    $addTime_sec = $part[0] * 3600 + $part[1] * 60 + $part[2];
+    if (!$sign) {
+      $addTime_sec = $addTime_sec * -1;
+    }
+    $res = strtotime($time) + $addTime_sec;
+    return date('H:i', $res);
+  }
+}

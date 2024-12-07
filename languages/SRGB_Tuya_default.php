@@ -2,8 +2,8 @@
 
 $dictionary = array(
 
- 'SDimmersCct_PATTERN_BRIGHTNESS' => 'brightness',
- 'SDimmersCct_PATTERN_TEMPERATURE' => 'temperature'
+ 'SRGB_Tuya_PATTERN_BRIGHTNESS' => 'brightness',
+ 'SRGB_Tuya_PATTERN_COLOR' => 'color'
 
 );
 
@@ -12,3 +12,4 @@ foreach ($dictionary as $k => $v) {
   @define('LANG_' . $k, $v);
  }
 }
+d

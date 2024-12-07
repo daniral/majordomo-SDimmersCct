@@ -1,0 +1,31 @@
+<script type="text/javascript">
+    var dimmer%.object_id%brightness=%.brightness%;
+
+    function sendNewbrightness%.object_id%() {
+        //setGlobal("%.object_title%.brightnessLevel",dimmer%.object_id%brightnessLevel);
+		callMethod('%.object_title%.turnOn','brightness='+dimmer%.object_id%brightness);
+    }
+    function dimmerSetbrightness%.object_id%(val) {
+		dimmer%.object_id%brightness=val;
+        $('#dimmer%.object_id%_bright').html(dimmer%.object_id%brightness);
+        sendNewbrightness%.object_id%();
+    }
+</script>
+<script src='<#ROOTHTML#>3rdparty/spectrum/spectrum.min.js'></script>
+<link rel='stylesheet' href='<#ROOTHTML#>3rdparty/spectrum/spectrum.min.css' />
+<div class="device-widget controller" onClick='callMethod("%.object_title%.switch");'>
+    <div class="device-icon %.status|"off;on"%" style='%.icon|"background-image:url(%.icon%)"%'></div>
+<div class="device-header"><span>%.object_description%</span>
+    <input type="text" id="color%.object_id%" class="colorpicker" value="%.colorSaved%" onChange='callMethod("%.object_title%.turnOn","color="+encodeURIComponent(this.value));'/>
+</div>
+<script>
+    $("#color%.object_id%").spectrum({
+        preferredFormat: "hex",
+        showInput: true,
+        chooseText: "OKd",
+        cancelText: "<#LANG_CANCEL#>"
+    });
+</script>
+</div>
+ <div class="device-details"> <span id="dimmer%.object_id%_bright">Яркость: %.brightness%</span></div>
+  <input id="dimmerSelect%.object_id%" type="range" min="0" max="100" step="1" value="%.brightness%" onChange="dimmerSetbrightness%.object_id%(this.value);">

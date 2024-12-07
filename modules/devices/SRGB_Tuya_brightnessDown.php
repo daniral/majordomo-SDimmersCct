@@ -5,7 +5,7 @@
 */
 
 $inc;
-$brightnessLevel = $this->getProperty('brightnessLevel');
+$brightness = $this->getProperty('brightness');
 
 if (isset($params[value]) && $params[value] > 0 && $params[value] <= 50) {
   $inc = $params[value];
@@ -16,14 +16,14 @@ if (isset($params[value]) && $params[value] > 0 && $params[value] <= 50) {
   $inc = '-10';
 }
 
-$brightnessLevel += $inc;
+$brightness += $inc;
 
-if ($brightnessLevel < 1) {
-  $brightnessLevel = 1;
+if ($brightness < 0) {
+  $brightness = 0;
 }
 
-if ($brightnessLevel == $this->getProperty('brightnessLevel')) {
+if ($brightness == $this->getProperty('brightness')) {
   return;
 }
 
-$this->callMethod('setBrightnessLevel', array('value' => $brightnessLevel));
+$this->callMethod('turnOn', array('brightness' => $brightness));

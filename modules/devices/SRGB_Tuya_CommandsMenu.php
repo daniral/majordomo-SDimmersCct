@@ -284,7 +284,7 @@ $Record['MAX_VALUE']=100;
 $Record['CUR_VALUE']='100';
 $Record['STEP_VALUE']=1;
 $Record['LINKED_OBJECT']=$objctName;
-$Record['LINKED_PROPERTY']='dayBrightnessLevel';
+$Record['LINKED_PROPERTY']='dayBrightness';
 $R18=SQLInsert('commands', $Record);
 //Menu-21
 $Record = Array();
@@ -300,7 +300,7 @@ $Record['MAX_VALUE']=100;
 $Record['CUR_VALUE']='10';
 $Record['STEP_VALUE']=1;
 $Record['LINKED_OBJECT']=$objctName;
-$Record['LINKED_PROPERTY']='nightBrightnessLevel';
+$Record['LINKED_PROPERTY']='nightBrightness';
 $R20=SQLInsert('commands', $Record);
 //Menu-22
 $Record = Array();
