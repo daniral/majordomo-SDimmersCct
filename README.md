@@ -23,7 +23,7 @@
 
 Включить - callMethod('имя объекта '.'turnOn');  
 Если без параметров установит то что в brightnessSaved и colorSeved.  
-Если brightnessSaved и colorSeved пусто то на полную яркость(100%) и белый цвет(№FFFFFF).  
+Если brightnessSaved и colorSeved пусто то на полную яркость(100%) и белый цвет(#FFFFFF).  
 
 С параметрами:
 - callMethod('имя объекта.turnOn', array('brightness'=> 1<-->100, 'color'=> '#------');  
