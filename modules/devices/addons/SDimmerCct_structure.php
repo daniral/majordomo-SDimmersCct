@@ -9,7 +9,7 @@ if (SETTINGS_SITE_LANGUAGE && file_exists(ROOT . 'languages/SDimmersCct_' . SETT
 $this->device_types['dimmer'] = array(
 	'TITLE' => 'Освещение (Яркость,Температура)',
 	'PARENT_CLASS' => 'SDimmers',
-	'CLASS' => 'SDimmersCct',
+	'CLASS' => 'SDimmerCct',
 	'PROPERTIES' => array(
 		'addTimeSunrise' => array('DESCRIPTION' => 'Добавить к восходу(00:00)'),
 		'addTimeSunset' => array('DESCRIPTION' => 'Добавить к закату(00:00)'),

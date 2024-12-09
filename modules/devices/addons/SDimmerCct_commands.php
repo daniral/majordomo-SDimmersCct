@@ -1,6 +1,6 @@
 <?php
 
-if ($device_type == 'SDimmersCct') {
+if ($device_type == 'SDimmerCct') {
  if (preg_match('/' . LANG_DEVICES_PATTERN_TURNON . '/uis', $command)) {
   sayReplySafe(LANG_TURNING_ON . ' ' . $device_title . $add_phrase, 2);
   $run_code .= "callMethod('$linked_object.turnOn');";
