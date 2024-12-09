@@ -24,4 +24,4 @@ if (isset($params['value']) && $params['value'] >= 0 && $params['value'] <= 100)
 	$new_brightLevel = 100;
 }
 
-$this->setProperty('brightnessLevel', $new_brightLevel);
+$this->setProperty('level', $new_brightLevel);

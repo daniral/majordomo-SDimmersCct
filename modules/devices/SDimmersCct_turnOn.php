@@ -27,8 +27,8 @@
   Если без параметров установит то что в brightnessLevelSeved и cctLevelSeved.
   Если brightnessLevelSeved и cctLevelSeved пусто то на полную яркость(100%) и холодный цвет(0%).
   С параметрами:
-    - callMethod('имя объекта.turnOn', array('brightnessLevel'=> 1<-->100,'cctLevel'=> 0<-->100));
-    - callMethod('имя объекта.turnOn', array('brightnessLevel'=> 1<-->100));
+    - callMethod('имя объекта.turnOn', array('level'=> 1<-->100,'cctLevel'=> 0<-->100));
+    - callMethod('имя объекта.turnOn', array('level'=> 1<-->100));
     - callMethod('имя объекта.turnOn', array('cctLevel'=> 0<-->100));
 
 Устанавливается flag=1. Стопер который не дает запускаться методу AutoOFF.
@@ -65,12 +65,12 @@
   если illuminance меньше чем установленно в illuminanceMax подсветка вкится.
   Работу по датчику освещения не проверял так как не имеется в наличии.
 Можно запустить режим подсветки с параметпами:
-  - callMethod('имя объекта.turnOn', array('dayNight'=>1, 'brightnessLevel'=> 1<--> 100,'cctLevel'=> 0<-->100));
+  - callMethod('имя объекта.turnOn', array('dayNight'=>1, 'level'=> 1<--> 100,'cctLevel'=> 0<-->100));
 
 Устанавливается flag=0. Запускается метод AutoOFF.
 
 Методы:
-  - setBrightnessLevel -  Установить яркость света.(array("value"=> 0 <--> 100 %))
+  - setLevel -  Установить яркость света.(array("value"=> 0 <--> 100 %))
                           Без  параметров то что в brightnessLevelSeved.
                           Если brightnessLevelSeved пусто то 100%.
                           flag 1 - автовыключение не запустится.
@@ -130,7 +130,7 @@ if ($this->getProperty('sunsetTime') == '') $this->setProperty('sunsetTime', $th
 
 
 $cctLevel = isset($params['cctLevel']) && $params['cctLevel'] >= 0 && $params['cctLevel'] <= 100 ? $params['cctLevel'] : 0;
-$brightnessLevel = isset($params['brightnessLevel']) && $params['brightnessLevel'] > 0 && $params['brightnessLevel'] <= 100 ? $params['brightnessLevel'] : 0;
+$level = isset($params['level']) && $params['level'] > 0 && $params['level'] <= 100 ? $params['level'] : 0;
 $dayNight = isset($params['dayNight']) && $params['dayNight'] == 1 ? 1 : 0;
 
 $day_b;
@@ -142,10 +142,10 @@ if (!$dayNight) {
   } else {
     $this->callMethod('setCctLevel');
   }
-  if ($brightnessLevel) {
-    $this->callMethod('setBrightnessLevel', $brightnessLevel);
+  if ($level) {
+    $this->callMethod('setLevel', $level);
   } else {
-    $this->callMethod('setBrightnessLevel');
+    $this->callMethod('setLevel');
   }
   return;
 }
@@ -161,15 +161,15 @@ if ($dayNight && !$this->getProperty('flag')) {
   }
   if ($this->getProperty('autoOnOff')) {
     if (($this->getProperty('workInDai') == '2' || $this->getProperty('workInDai') == '0') && !$this->getProperty('bySensor') && timeBetween($night_b, $day_b)) {
-      $this->setProperty('brightnessLevel', $brightnessLevel ? $brightnessLevel : $this->getProperty('nightBrightnessLevel'));
+      $this->setProperty('level', $level ? $level : $this->getProperty('nightBrightnessLevel'));
       $this->setProperty('cctLevel', $cctLevel ? $cctLevel : $this->getProperty('nightCctLevel'));
       $this->callMethod('AutoOFF');
     } else if (($this->getProperty('workInDai') == '1' || $this->getProperty('workInDai') == '0') && !$this->getProperty('bySensor') && timeBetween($day_b, $night_b)) {
-      $this->setProperty('brightnessLevel', $brightnessLevel ? $brightnessLevel : $this->getProperty('dayBrightnessLevel'));
+      $this->setProperty('level', $level ? $level : $this->getProperty('dayBrightnessLevel'));
       $this->setProperty('cctLevel', $cctLevel ? $cctLevel : $this->getProperty('dayCctLevel'));
       $this->callMethod('AutoOFF');
     } else if (($this->getProperty('bySensor') && $this->getProperty('illuminance') <= $this->getProperty('illuminanceMax')) || $this->getProperty('illuminanceFlag')) {
-      $this->setProperty('brightnessLevel', $this->getProperty('nightBrightnessLevel'));
+      $this->setProperty('level', $this->getProperty('nightBrightnessLevel'));
       $this->setProperty('cctLevel', $this->getProperty('nightCctLevel'));
       $this->setProperty('illuminanceFlag', 1);
       $this->callMethod('AutoOFF');

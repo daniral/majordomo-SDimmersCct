@@ -4,4 +4,4 @@
 Выключение
 */
 
-$this->callMethod('setBrightnessLevel', array('value' => 0));
+$this->callMethod('setLevel', array('value' => 0));

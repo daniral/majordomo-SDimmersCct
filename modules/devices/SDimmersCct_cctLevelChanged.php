@@ -21,7 +21,7 @@ if ($cctWorkMin != $cctWorkMax) {
 	if ($this->getProperty('flag')) {
 		$this->setProperty('cctLevelSeved', $cctLevelNew);
 	}
-	if (!$this->getProperty('brightnessLevel')) {
-		$this->setProperty('brightnessLevel', $brightnessLevelSeved ? $brightnessLevelSeved : 100);
+	if (!$this->getProperty('level')) {
+		$this->setProperty('level', $brightnessLevelSeved ? $brightnessLevelSeved : 100);
 	}
 }

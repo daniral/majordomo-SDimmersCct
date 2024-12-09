@@ -24,7 +24,7 @@ if ($device_type == 'SDimmersCct') {
  }
  elseif (preg_match('/' . LANG_SDimmersCct_PATTERN_BRIGHTNESS . '/uis', $command)) {
   if(preg_match('/(?:\s)(\d{1,2}|100)(?:%|\s|$)/uis', $command, $matches)) {
-   $run_code .= "setGlobal('$linked_object.brightnessLevel', $matches[1]);";
+   $run_code .= "setGlobal('$linked_object.level', $matches[1]);";
    $processed = 1;
    $reply_confirm = 1;
   }

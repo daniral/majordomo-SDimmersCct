@@ -3,7 +3,7 @@
 /*
 
 Запускается при изменении рабочнго уровня.
-Переводит в проценты и пишет в brightnessLevel.
+Переводит в проценты и пишет в level.
 
 */
 
@@ -16,7 +16,7 @@ $brightnessWorkMax = $this->getProperty('brightnessWorkMax');
 if ($brightnessWorkNew == $brightnessWorkOld || $brightnessWorkNew < $brightnessWorkMin || $brightnessWorkNew > $brightnessWorkMax) return;
 
 if ($brightnessWorkMin != $brightnessWorkMax) {
-    $brightnessLevel = round(($brightnessWorkNew - $brightnessWorkMin) / (round($brightnessWorkMax - $brightnessWorkMin)) * 100);
-    $this->setProperty('brightnessLevel', $brightnessLevel,'','brightnessWorkChanged');
+    $level = round(($brightnessWorkNew - $brightnessWorkMin) / (round($brightnessWorkMax - $brightnessWorkMin)) * 100);
+    $this->setProperty('level', $level,'','brightnessWorkChanged');
 }
 */

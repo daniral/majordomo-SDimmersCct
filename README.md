@@ -37,8 +37,8 @@
 Если brightnessLevelSeved и cctLevelSeved пусто то на полную яркость(100%) и холодный цвет(0%).  
 
 С параметрами:
-- callMethod('имя объекта.turnOn', array('brightnessLevel'=> 1<-->100, 'cctLevel'=> 0<-->100));  
-- callMethod('имя объекта.turnOn', array('brightnessLevel'=> 1<-->100));  
+- callMethod('имя объекта.turnOn', array('level'=> 1<-->100, 'cctLevel'=> 0<-->100));  
+- callMethod('имя объекта.turnOn', array('level'=> 1<-->100));  
 - callMethod('имя объекта.turnOn', array('cctLevel'=> 0<-->100));  
 
 **Устанавливается flag=1. Стопер который не дает запускаться методу AutoOFF.**
@@ -74,14 +74,14 @@
       - если illuminance меньше чем установленно в illuminanceMax подсветка включится.  
     - ***Работу по датчику освещения не проверял так как не имеется в наличии.***  
 - **Можно запустить режим подсветки с параметпами:**
-  - callMethod('имя объекта.turnOn', array('dayNight'=>1, 'brightnessLevel'=> 1<--> 100,'cctLevel'=> 0<-->100));
+  - callMethod('имя объекта.turnOn', array('dayNight'=>1, 'level'=> 1<--> 100,'cctLevel'=> 0<-->100));
 
 
 **Устанавливается flag=0. Запускается метод AutoOFF.**
 
 ## **Методы:**
 
-- **setBrightnessLevel** -  Установить яркость света.(array("value"=> 0 <--> 100 %))  
+- **setLevel** -  Установить яркость света.(array("value"=> 0 <--> 100 %))  
   - Без  параметров то что в brightnessLevelSeved.  
     - Если brightnessLevelSeved пусто то 100%.  
    - **flag=1** - автовыключение не запустится. 

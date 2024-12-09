@@ -4,7 +4,7 @@
 Увеличит максимум до 100%.
 */
 
-$brightnessLevel = $this->getProperty('brightnessLevel');
+$level = $this->getProperty('level');
 $inc;
 
 if (isset($params[value]) && $params[value] > 0 && $params[value] <= 50) {
@@ -16,14 +16,14 @@ if (isset($params[value]) && $params[value] > 0 && $params[value] <= 50) {
   $inc = '10';
 }
 
-$brightnessLevel += $inc;
+$level += $inc;
 
-if ($brightnessLevel > 100) {
-  $brightnessLevel = 100;
+if ($level > 100) {
+  $level = 100;
 }
 
-if ($brightnessLevel == $this->getProperty('brightnessLevel')) {
+if ($level == $this->getProperty('level')) {
   return;
 }
 
-$this->callMethod('setBrightnessLevel', array('value' => $brightnessLevel));
+$this->callMethod('setLevel', array('value' => $level));

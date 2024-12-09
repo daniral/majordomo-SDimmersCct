@@ -6,9 +6,9 @@ if (SETTINGS_SITE_LANGUAGE && file_exists(ROOT . 'languages/SDimmersCct_' . SETT
 	include_once(ROOT . 'languages/SDimmersCct_default.php'); //
 }
 
-$this->device_types['dimmerCct'] = array(
+$this->device_types['dimmer'] = array(
 	'TITLE' => 'Освещение (Яркость,Температура)',
-	'PARENT_CLASS' => 'SControllers',
+	'PARENT_CLASS' => 'SDimmers',
 	'CLASS' => 'SDimmersCct',
 	'PROPERTIES' => array(
 		'addTimeSunrise' => array('DESCRIPTION' => 'Добавить к восходу(00:00)'),
@@ -34,7 +34,8 @@ $this->device_types['dimmerCct'] = array(
 		'dayCctLevel' => array('DESCRIPTION' => 'Уровень температуры днем (1<-->100)'),
 		'nightBrightnessLevel' => array('DESCRIPTION' => 'Уровень яркости ночью(1<-->100)'),
 		'nightCctLevel' => array('DESCRIPTION' => 'Уровень температуры днем (1<-->100)'),
-		'brightnessLevel' => array('DESCRIPTION' => 'Яркость (0<-->100)', 'ONCHANGE' => 'brightnessLevelChanged', 'DATA_KEY' => 1),
+
+		'level' => array('DESCRIPTION' => 'Яркость (0<-->100)', 'ONCHANGE' => 'brightnessLevelChanged', 'DATA_KEY' => 1),
 		'cctLevel' => array('DESCRIPTION' => 'Уровень температуры: (0<-->100)', 'ONCHANGE' => 'cctLevelChanged', 'DATA_KEY' => 1),
 		
 		'brightnessWorkMax' => array('DESCRIPTION' => 'Максимальная рабочая яркость.', '_CONFIG_TYPE' => 'num'),
@@ -59,7 +60,7 @@ $this->device_types['dimmerCct'] = array(
 		'cctPreset' => array('DESCRIPTION' => 'Цветовые пресеты.(array(\'value\'=>\'C\'-cold,\'N\'-neutral,\'W\'-warmest))', '_CONFIG_SHOW' => 1, '_CONFIG_REQ_VALUE' => 1),
 		'CommandsMenu' => array('DESCRIPTION' => 'Создает меню управления.(Запускать 1 раз для каждого объекта).', '_CONFIG_SHOW' => 1),
 		'presenceUpdated' => array('DESCRIPTION' => 'Запускается при изменении свойства presence'),
-		'setBrightnessLevel' => array('DESCRIPTION' => 'Установить уровень яркости.(array(\'value\'=> 0<-->100)) Без  параметров то что в brightnessLevelSeved. Если brightnessLevelSeved пусто то 100.', '_CONFIG_SHOW' => 1, '_CONFIG_REQ_VALUE' => 1),
+		'setLevel' => array('DESCRIPTION' => 'Установить уровень яркости.(array(\'value\'=> 0<-->100)) Без  параметров то что в brightnessLevelSeved. Если brightnessLevelSeved пусто то 100.', '_CONFIG_SHOW' => 1, '_CONFIG_REQ_VALUE' => 1),
 		'setCctLevel' => array('DESCRIPTION' => 'Установить уровень температуры.(array(\'value\'=> 0<-->100)) Без  параметров то что в cctLevelSeved. Если cctLevelSeved пуст то 0.', '_CONFIG_SHOW' => 1, '_CONFIG_REQ_VALUE' => 1),
 		'switch' => array('DESCRIPTION' => 'Переключить', '_CONFIG_SHOW' => 1),
 		'switchByManually' => array('DESCRIPTION' => 'При включении вручную отключить по солнцу и по датчику.'),
