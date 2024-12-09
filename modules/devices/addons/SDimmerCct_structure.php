@@ -35,7 +35,7 @@ $this->device_types['dimmer'] = array(
 		'nightLevel' => array('DESCRIPTION' => 'Уровень яркости ночью(1<-->100)'),
 		'nightCctLevel' => array('DESCRIPTION' => 'Уровень температуры днем (1<-->100)'),
 
-		'level' => array('DESCRIPTION' => 'Яркость (0<-->100)', 'ONCHANGE' => 'brightnessLevelChanged', 'DATA_KEY' => 1),
+		'level' => array('DESCRIPTION' => 'Яркость (0<-->100)', 'ONCHANGE' => 'levelChanged', 'DATA_KEY' => 1),
 		'cctLevel' => array('DESCRIPTION' => 'Уровень температуры: (0<-->100)', 'ONCHANGE' => 'cctLevelChanged', 'DATA_KEY' => 1),
 		
 		'maxWork' => array('DESCRIPTION' => 'Максимальная рабочая яркость.', '_CONFIG_TYPE' => 'num'),
@@ -44,7 +44,7 @@ $this->device_types['dimmer'] = array(
 		'cctWorkMin' => array('DESCRIPTION' => 'Минимальная рабочая теплота.', '_CONFIG_TYPE' => 'num'),
 		'levelSaved' => array('DESCRIPTION' => 'Сохраненная(предыдущая) яркость.', '_CONFIG_TYPE' => 'num'),
 		'cctSeved' => array('DESCRIPTION' => 'Сохраненная(предыдущая) теплота.', '_CONFIG_TYPE' => 'num'),
-		'levelWork' => array('DESCRIPTION' => 'Рабочая яркость.', 'ONCHANGE' => 'brightnessWorkChanged', '_CONFIG_TYPE' => 'num'),
+		'levelWork' => array('DESCRIPTION' => 'Рабочая яркость.', 'ONCHANGE' => 'levelWorkChanged', '_CONFIG_TYPE' => 'num'),
 		'cctWork' => array('DESCRIPTION' => 'Рабочая теплота.', 'ONCHANGE' => 'cctWorkChanged', '_CONFIG_TYPE' => 'num'),
 		
 		
@@ -52,8 +52,8 @@ $this->device_types['dimmer'] = array(
 	),
 	'METHODS' => array(
 		'AutoOFF' => array('DESCRIPTION' => 'Автовыключение (timerOFF) 0 не включает.'),
-		'brightnessLevelDown' => array('DESCRIPTION' => 'Уменьшить уровень яркости.(array(\'value\'=>1-50)) Без параметров -10.', '_CONFIG_SHOW' => 1, '_CONFIG_REQ_VALUE' => 1),
-		'brightnessLevelUp' => array('DESCRIPTION' => 'Увеличить уровень яркости.(array(\'value\'=>1-50)) Без параметров +10.', '_CONFIG_SHOW' => 1, '_CONFIG_REQ_VALUE' => 1),
+		'levelDown' => array('DESCRIPTION' => 'Уменьшить уровень яркости.(array(\'value\'=>1-50)) Без параметров -10.', '_CONFIG_SHOW' => 1, '_CONFIG_REQ_VALUE' => 1),
+		'levelUp' => array('DESCRIPTION' => 'Увеличить уровень яркости.(array(\'value\'=>1-50)) Без параметров +10.', '_CONFIG_SHOW' => 1, '_CONFIG_REQ_VALUE' => 1),
 		'cctLevelDown' => array('DESCRIPTION' => 'Уменьшить уровень температуры.(array(\'value\'=>1-50)) Без параметров -10.', '_CONFIG_SHOW' => 1, '_CONFIG_REQ_VALUE' => 1),
 		'cctLevelUp' => array('DESCRIPTION' => 'Увеличить уровень температуры.(array(\'value\'=>1-50)) Без параметров +10.', '_CONFIG_SHOW' => 1, '_CONFIG_REQ_VALUE' => 1),
 		'byDefault' => array('DESCRIPTION' => 'Установить свойства по умолчанию.'),
@@ -68,9 +68,9 @@ $this->device_types['dimmer'] = array(
 		'switchBySunTime' => array('DESCRIPTION' => 'При включении по солнцу отключить по датчику света и вручную.'),
 		'turnOn' => array('DESCRIPTION' => 'ВключитЬ', '_CONFIG_SHOW' => 1),
 		'turnOff' => array('DESCRIPTION' => 'Выключить', '_CONFIG_SHOW' => 1),
-		'brightnessLevelChanged' => array('DESCRIPTION' => 'Запускается при смене яркости'),
+		'levelChanged' => array('DESCRIPTION' => 'Запускается при смене яркости'),
 		'cctLevelChanged' => array('DESCRIPTION' => 'Запускается при смене цвета температуры'),
-		'brightnessWorkChanged' => array('DESCRIPTION' => 'Запускается при смене рабочей яркости'),
+		'levelWorkChanged' => array('DESCRIPTION' => 'Запускается при смене рабочей яркости'),
 		'cctWorkChanged' => array('DESCRIPTION' => 'Запускается при смене цвета рабочей температуры'),
 	),
 );

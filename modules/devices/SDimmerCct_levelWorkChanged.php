@@ -17,6 +17,6 @@ if ($brightnessWorkNew == $brightnessWorkOld || $brightnessWorkNew < $minWork ||
 
 if ($minWork != $maxWork) {
     $level = round(($brightnessWorkNew - $minWork) / (round($maxWork - $minWork)) * 100);
-    $this->setProperty('level', $level,'','brightnessWorkChanged');
+    $this->setProperty('level', $level,'','levelWorkChanged');
 }
 */
