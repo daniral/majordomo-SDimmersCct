@@ -2,8 +2,8 @@
 
 $dictionary = array(
 
- 'SDimmersCct_PATTERN_BRIGHTNESS' => 'ярк|ярч|яркость',
- 'SDimmersCct_PATTERN_TEMPERATURE' => 'температур|температура|цвет|теплота'
+ 'SDimmerCct_PATTERN_BRIGHTNESS' => 'ярк|ярч|яркость',
+ 'SDimmerCct_PATTERN_TEMPERATURE' => 'температур|температура|цвет|теплота'
 
 );
 
