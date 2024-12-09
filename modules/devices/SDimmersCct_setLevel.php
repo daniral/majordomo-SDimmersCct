@@ -3,11 +3,11 @@
 /*
 Флаг 1 - автовыключение не запустится.
 Установить яркость света.(array("value"=> 0 <--> 100 %))
-Без  параметров то что в brightnessLevelSeved.
-Если brightnessLevelSeved пусто то 100%.
+Без  параметров то что в levelSaved.
+Если levelSaved пусто то 100%.
 */
 
-$b_seved = $this->getProperty('brightnessLevelSeved');
+$b_seved = $this->getProperty('levelSaved');
 $new_brightLevel;
 
 $this->setProperty('flag', '1');

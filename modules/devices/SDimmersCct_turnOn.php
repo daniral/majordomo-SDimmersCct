@@ -1,7 +1,7 @@
 <?php
 /*
 Надо привязать к свойствам:
-    brightnessWork - brightness лампочки.
+    levelWork - brightness лампочки.
       Добавить Путь (write): zigbee2mqtt/Название устройства/set/brightness
     cctWork - color_temp лампочки.
       Добавить Путь (write): zigbee2mqtt/Название устройства/set/color_temp
@@ -10,13 +10,13 @@
       что бы знать включена или нет лапочка для сцен или кнопок.
   Минимальные и максимальные рабочие уровни:
     Например для лампочек Xiaomi ZigBee это:
-      - brightnessWorkMax - 254
-      - brightnessWorkMin - 0
+      - maxWork - 254
+      - minWork - 0
       - cctWorkMax - 370
       - cctWorkMin - 153
     а для лампочек Tuta ZigBee это:
-      - brightnessWorkMax - 254
-      - brightnessWorkMin - 0
+      - maxWork - 254
+      - minWork - 0
       - cctWorkMax - 500
       - cctWorkMin - 153
 
@@ -24,8 +24,8 @@
                                   ОБЫЧНЫЙ РЕЖИМ:
 
 Включить - callMethod('имя объекта '.'turnOn'); 
-  Если без параметров установит то что в brightnessLevelSeved и cctLevelSeved.
-  Если brightnessLevelSeved и cctLevelSeved пусто то на полную яркость(100%) и холодный цвет(0%).
+  Если без параметров установит то что в levelSaved и cctLevelSeved.
+  Если levelSaved и cctLevelSeved пусто то на полную яркость(100%) и холодный цвет(0%).
   С параметрами:
     - callMethod('имя объекта.turnOn', array('level'=> 1<-->100,'cctLevel'=> 0<-->100));
     - callMethod('имя объекта.turnOn', array('level'=> 1<-->100));
@@ -71,8 +71,8 @@
 
 Методы:
   - setLevel -  Установить яркость света.(array("value"=> 0 <--> 100 %))
-                          Без  параметров то что в brightnessLevelSeved.
-                          Если brightnessLevelSeved пусто то 100%.
+                          Без  параметров то что в levelSaved.
+                          Если levelSaved пусто то 100%.
                           flag 1 - автовыключение не запустится.
   - setCctLevel - Установить температуру.(array("value"=>0 <--> 100 %))
                     Без  параметров то что в cctLevelSeved.
@@ -103,8 +103,8 @@ if ($this->getProperty('dayBrightnessLevel') == '') $this->setProperty('dayBrigh
 if ($this->getProperty('dayCctLevel') == '') $this->setProperty('dayCctLevel', '0');
 if ($this->getProperty('nightBrightnessLevel') == '') $this->setProperty('nightBrightnessLevel', '10');
 if ($this->getProperty('nightCctLevel') == '') $this->setProperty('nightCctLevel', '100');
-if ($this->getProperty('brightnessWorkMin') == '') $this->setProperty('brightnessWorkMin', '0');
-if ($this->getProperty('brightnessWorkMax') == '') $this->setProperty('brightnessWorkMax', '254');
+if ($this->getProperty('minWork') == '') $this->setProperty('minWork', '0');
+if ($this->getProperty('maxWork') == '') $this->setProperty('maxWork', '254');
 if ($this->getProperty('cctWorkMin') == '') $this->setProperty('cctWorkMin', '153');
 if ($this->getProperty('cctWorkMax') == '') $this->setProperty('cctWorkMax', '370');
 if ($this->getProperty('timerOFF') == '') $this->setProperty('timerOFF', '120');

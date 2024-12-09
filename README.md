@@ -7,7 +7,7 @@
 
 **Надо привязать свойства:**
 
-- **brightnessWork - brightness лампочки.**
+- **levelWork - brightness лампочки.**
   - Добавить Путь (write): zigbee2mqtt/Название устройства/set/brightness
 - **cctWork - color_temp лампочки.**
   - Добавить Путь (write): zigbee2mqtt/Название устройства/set/color_temp
@@ -18,23 +18,23 @@
 
 **Например для лампочек Xiaomi ZigBee это:**
 
-- brightnessWorkMax - 254
-- brightnessWorkMin - 0
+- maxWork - 254
+- minWork - 0
 - cctWorkMax - 370
 - cctWorkMin - 153
 
 **Для для лампочек Tuta ZigBee это:**
 
-- brightnessWorkMax - 254
-- brightnessWorkMin - 0
+- maxWork - 254
+- minWork - 0
 - cctWorkMax - 500
 - cctWorkMin - 153
 
 ### **ОБЫЧНЫЙ РЕЖИМ:**
 
 Включить - callMethod('имя объекта '.'turnOn');  
-Если без параметров установит то что в brightnessLevelSeved и cctLevelSeved.  
-Если brightnessLevelSeved и cctLevelSeved пусто то на полную яркость(100%) и холодный цвет(0%).  
+Если без параметров установит то что в levelSaved и cctLevelSeved.  
+Если levelSaved и cctLevelSeved пусто то на полную яркость(100%) и холодный цвет(0%).  
 
 С параметрами:
 - callMethod('имя объекта.turnOn', array('level'=> 1<-->100, 'cctLevel'=> 0<-->100));  
@@ -82,8 +82,8 @@
 ## **Методы:**
 
 - **setLevel** -  Установить яркость света.(array("value"=> 0 <--> 100 %))  
-  - Без  параметров то что в brightnessLevelSeved.  
-    - Если brightnessLevelSeved пусто то 100%.  
+  - Без  параметров то что в levelSaved.  
+    - Если levelSaved пусто то 100%.  
    - **flag=1** - автовыключение не запустится. 
 - **setCctLevel** - Установить температуру.(array("value"=>0 <--> 100 %))  
    - Без  параметров то что в cctLevelSeved.  

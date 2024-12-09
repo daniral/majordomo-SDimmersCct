@@ -316,7 +316,7 @@ $Record['MAX_VALUE']=1000;
 $Record['CUR_VALUE']='254';
 $Record['STEP_VALUE']=1;
 $Record['LINKED_OBJECT']=$objctName;
-$Record['LINKED_PROPERTY']='brightnessWorkMax';
+$Record['LINKED_PROPERTY']='maxWork';
 $R20=SQLInsert('commands', $Record);
 //Menu-23
 $Record = Array();
@@ -332,7 +332,7 @@ $Record['MAX_VALUE']=1000;
 $Record['CUR_VALUE']='0';
 $Record['STEP_VALUE']=1;
 $Record['LINKED_OBJECT']=$objctName;
-$Record['LINKED_PROPERTY']='brightnessWorkMin';
+$Record['LINKED_PROPERTY']='minWork';
 $R20=SQLInsert('commands', $Record);
 //Menu-24
 $Record = Array();
