@@ -3,12 +3,12 @@
 /*
 Флаг 1 - автовыключение не запустится.
 Установить температуру.(array("value"=>0 <--> 100 %))
-Без  параметров то что в cctLevelSeved.
-Если cctLevelSeved пуст то 0 (холодный).
+Без  параметров то что в cctSeved.
+Если cctSeved пуст то 0 (холодный).
 */
 
 $new_cct;
-$c_seved = $this->getProperty('cctLevelSeved');
+$c_seved = $this->getProperty('cctSeved');
 
 $this->setProperty('flag', '1');
 
