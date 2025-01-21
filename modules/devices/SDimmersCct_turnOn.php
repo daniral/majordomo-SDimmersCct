@@ -198,8 +198,8 @@ if (!$autoMode) {
 
 if ($autoMode && !$this->getProperty('flag')) {
   if ($this->getProperty('workingBy') == '2' && $this->getProperty('sunriseTime') != '' && $this->getProperty('sunsetTime') != '' && $this->getProperty('sunriseTime') != $this->getProperty('sunsetTime')) {
-    $dayBegin = edit_time($this->getProperty('sunriseTime'), $this->getProperty('addTimeSunrise'), $this->getProperty('signSunrise'));
-    $nightBegin = edit_time($this->getProperty('sunsetTime'), $this->getProperty('addTimeSunset'), $this->getProperty('signSunset'));
+    $dayBegin = dimmerEeditTime($this->getProperty('sunriseTime'), $this->getProperty('addTimeSunrise'), $this->getProperty('signSunrise'));
+    $nightBegin = dimmerEeditTime($this->getProperty('sunsetTime'), $this->getProperty('addTimeSunset'), $this->getProperty('signSunset'));
   } else if ($this->getProperty('workingBy') != '3') {
     $dayBegin = $this->getProperty('dayBegin');
     $nightBegin = $this->getProperty('nightBegin');
@@ -220,7 +220,7 @@ if ($autoMode && !$this->getProperty('flag')) {
   }
 }
 
-function edit_time($time, $addTime, $sign)
+function dimmerEeditTime($time, $addTime, $sign)
 {
   $part = explode(':', $addTime);
   $addTime_sec = $part[0] * 3600 + $part[1] * 60 + $part[2];
