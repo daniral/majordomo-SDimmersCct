@@ -2,9 +2,9 @@
 
 /*
 Запускается при изменении свойства presence
-если 0 запустить AutoOff
+если 0 запустить autoOff
 */
 
 if (!$this->getProperty('presence')) {
-  $this->callMethod('AutoOff');
+  $this->callMethod('autoOff');
 }

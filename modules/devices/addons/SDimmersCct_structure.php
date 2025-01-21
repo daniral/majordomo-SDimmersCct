@@ -45,7 +45,7 @@ $this->device_types['dimmer'] = array(
 		'cctMinWork' => array('DESCRIPTION' => 'Минимальная рабочая теплота.', '_CONFIG_TYPE' => 'num'),
 	),
 	'METHODS' => array(
-		'AutoOff' => array('DESCRIPTION' => 'Автовыключение'),
+		'autoOff' => array('DESCRIPTION' => 'Автовыключение'),
 		'levelDown' => array('DESCRIPTION' => 'Уменьшить уровень яркости.', '_CONFIG_SHOW' => 1, '_CONFIG_REQ_VALUE' => 1),
 		'levelUp' => array('DESCRIPTION' => 'Увеличить уровень яркости.', '_CONFIG_SHOW' => 1, '_CONFIG_REQ_VALUE' => 1),
 		'cctDown' => array('DESCRIPTION' => 'Уменьшить уровень температуры.', '_CONFIG_SHOW' => 1, '_CONFIG_REQ_VALUE' => 1),
