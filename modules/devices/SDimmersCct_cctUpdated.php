@@ -34,7 +34,7 @@ if ($cctMinWork != $cctMaxWork) {
 	if ($this->getProperty('flag')) {
 		$this->setProperty('cctSeved', $cctNew); 
 	}
-	if (!$this->getProperty('level')) {
+	if (!$this->getProperty('level') || !$this->getProperty('status')) {
 		$this->setProperty('level', $levelSaved ? $levelSaved : 100);
 	}
 }
