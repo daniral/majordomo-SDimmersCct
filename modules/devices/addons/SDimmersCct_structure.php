@@ -42,7 +42,7 @@ $this->device_types['dimmerCct'] = array(
 		'addTimeSunrise' => array('DESCRIPTION' => 'Часов:Минут(00:00)', '_CONFIG_TYPE' => 'num'),
 		'signSunset' => array('DESCRIPTION' => 'Закат','_CONFIG_TYPE'=>'select','_CONFIG_OPTIONS'=>'1=прибавить,0=отнять'),
 		'addTimeSunset' => array('DESCRIPTION' => 'Часов:Минут(00:00)', '_CONFIG_TYPE' => 'num'),
-		'illuminanceMax' => array('DESCRIPTION' => 'Максимальное освещение', '_CONFIG_TYPE' => 'num'),
+		'illuminanceMax' => array('DESCRIPTION' => 'Макc.освещение(датчик)', '_CONFIG_TYPE' => 'num'),
 	),
 	'METHODS' => array(
 		'turnOn' => array('DESCRIPTION' => 'Включить', '_CONFIG_SHOW' => 1),
