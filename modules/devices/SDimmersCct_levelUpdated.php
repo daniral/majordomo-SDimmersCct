@@ -15,7 +15,10 @@ if ($minWork != $maxWork) {
     $levelWork = round($minWork + round(($maxWork - $minWork) * $levelNew / 100));
     if($levelWork > 0) {
 		$this->setProperty('levelWork', $levelWork);
-        $this->setProperty('status', 1);
+        if(!$this->getProperty('status')){
+            $this->setProperty('status', 1);
+        }
+            
 	}else {
         $this->callMethod('turnOff');
     }
