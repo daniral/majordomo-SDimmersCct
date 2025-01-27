@@ -140,13 +140,13 @@
 */
 if ($this->getProperty('dayLevel') == '') $this->setProperty('dayLevel', '100');
 if ($this->getProperty('dayCct') == '') $this->setProperty('dayCct', '0');
-if ($this->getProperty('nightLevel') == '') $this->setProperty('nightLevel', '10');
+if ($this->getProperty('nightLevel') == '') $this->setProperty('nightLevel', '30');
 if ($this->getProperty('nightCct') == '') $this->setProperty('nightCct', '100');
 if ($this->getProperty('minWork') == '') $this->setProperty('minWork', '0');
 if ($this->getProperty('maxWork') == '') $this->setProperty('maxWork', '254');
 if ($this->getProperty('cctMinWork') == '') $this->setProperty('cctMinWork', '153');
 if ($this->getProperty('cctMaxWork') == '') $this->setProperty('cctMaxWork', '370');
-if ($this->getProperty('timerOff') == '') $this->setProperty('timerOff', '120');
+if ($this->getProperty('timerOff') == '') $this->setProperty('timerOff', '45');
 if ($this->getProperty('presence') == '') $this->setProperty('presence', '0');
 if ($this->getProperty('dayBegin') == '') $this->setProperty('dayBegin', '08:00');
 if ($this->getProperty('nightBegin') == '') $this->setProperty('nightBegin', '18:00');

@@ -18,6 +18,7 @@ $Record['SUB_LIST']=($insertID+1).",".($insertID+2).",".($insertID+3).",".($inse
 $Record['PARENT_LIST']='0';
 $Record['PRIORITY']=10;
 $Record['SUB_PRELOAD']=1;
+$Record['ICON'] = 'lightLamp.png';
 $R=SQLInsert('commands', $Record);
 
 
