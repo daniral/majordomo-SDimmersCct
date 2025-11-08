@@ -3,22 +3,18 @@
 Уменьшить яркость на (array("value"=>1--100)). Без  параметров на 10.
 */
 
-$inc;
-$level = $this->getProperty('level');
+$level = (int)$this->getProperty('level');
 
-if (isset($params['value']) && is_numeric($params['value'])) {
-  $inc = $params['value'];
-  if ($inc < 1) $inc *= -1;
-  if ($inc > 100) $inc = 100;
-  $inc *= -1;
-}else {
-  $inc = -10;
-}
+// Определяем шаг увеличения и ограничиваем 1–100
+$inc = isset($params['value']) && is_numeric($params['value']) 
+    ? (int)$params['value'] 
+    : 10;
 
-$level += $inc;
+// $inc всегда 1..100
+$inc = max(1, min(100, abs($inc))); 
 
-if ($level < 0) {
-  $level = 0;
-}
+// Увеличиваем уровень, но не больше 100
+$level = max(0, $level - $inc);
 
-$this->callMethod('setLevel', array('value' => $level));
+// Устанавливаем новое значение
+$this->callMethod('setLevel', ['value' => $level]);

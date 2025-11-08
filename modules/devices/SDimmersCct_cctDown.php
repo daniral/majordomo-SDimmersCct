@@ -1,24 +1,20 @@
 <?php
 /*
-Уменьшить температуру.(array("value"=>1--100)). Без  параметров -10.
+Уменьшить температуру.(array("value"=>1--100)). Без  параметров 10.
 */
 
-$inc;
-$cctLevel = $this->getProperty('cctLevel');
+$cct = (int)$this->getProperty('cct');
 
-if (isset($params['value']) && is_numeric($params['value'])) {
-  $inc = $params['value'];
-  if ($inc < 1) $inc *= -1;
-  if ($inc > 100) $inc = 100;
-  $inc *= -1;
-}else {
-  $inc = -10;
-}
+// Определяем шаг уменьшения и ограничиваем 1–100
+$inc = isset($params['value']) && is_numeric($params['value'])
+    ? (int)$params['value']
+    : 10;
 
-$cctLevel += $inc;
+// $inc всегда 1..100
+$inc = max(1, min(100, abs($inc))); 
 
-if ($cctLevel < 0) {
-  $cctLevel = 0;
-}
+// Уменьшаем, но не ниже 0
+$cct = max(0, $cct - $inc);
 
-$this->callMethod('setCct', array('value' => $cctLevel));
+// Применяем новое значение
+$this->callMethod('setCct', ['value' => $cct]);
