@@ -1,40 +1,114 @@
 <script type="text/javascript">
-    function sendNewbrightness%.object_id%() {
-        //setGlobal("%.object_title%.level",dimmer%.object_id%level);
-		callMethod('%.object_title%.setLevel','value='+dimmer%.object_id%level);
-    }
-    function dimmerSetbrightness%.object_id%(val) {
-		dimmer%.object_id%level=val;
-        $('#dimmer%.object_id%_bright').html("Яркость: "+dimmer%.object_id%level);
-        sendNewbrightness%.object_id%();
-    }
-    function sendNewcct%.object_id%() {
-        //setGlobal("%.object_title%.cctLevel",dimmer%.object_id%cctLevel);
-		callMethod('%.object_title%.setCct','value='+dimmer%.object_id%cctLevel);
-    }
-    function dimmerSetcct%.object_id%(val) {
-        dimmer%.object_id%cctLevel=val;
-        $('#dimmer%.object_id%_cct').html("Температура: "+dimmer%.object_id%cctLevel);
-        sendNewcct%.object_id%();
-    }
+let brightnessTimer%.object_id%, cctTimer%.object_id%;
+
+function sendNewBrightness%.object_id%() {
+  callMethod('%.object_title%.setLevel', 'value=' + dimmer%.object_id%.level);
+}
+
+function setBrightness%.object_id%(val) {
+  val = parseInt(val);
+  dimmer%.object_id%.level = val;
+  $('#dimmer%.object_id%_bright').html("Яркость: " + val + "%");
+  
+  // обновляем градиент ползунка
+  $('#dimmerSelect%.object_id%_bright').css(
+      'background', `linear-gradient(to right, #4CAF50 ${val}%, #ddd ${val}%)`
+  );
+
+  clearTimeout(brightnessTimer%.object_id%);
+  brightnessTimer%.object_id% = setTimeout(() => sendNewBrightness%.object_id%(), 150);
+}
+
+function sendNewCct%.object_id%() {
+  callMethod('%.object_title%.setCct', 'value=' + dimmer%.object_id%.cctLevel);
+}
+
+function setCct%.object_id%(val) {
+  val = parseInt(val);
+  dimmer%.object_id%.cctLevel = val;
+  $('#dimmer%.object_id%_cct').html("Температура: " + val + "%");
+  
+  $('#dimmerSelect%.object_id%_cct').css(
+      'background', `linear-gradient(to right, #FFB74D ${val}%, #ddd ${val}%)`
+  );
+
+  clearTimeout(cctTimer%.object_id%);
+  cctTimer%.object_id% = setTimeout(() => sendNewCct%.object_id%(), 150);
+}
 </script>
 
 <style>
-	.card { background:#f4f4f4; border-radius:12px; padding:15px; box-shadow:0 2px 6px rgba(0,0,0,0.15); margin: 15px 0 15px 50px;}
-	input[type=color], input[type=range], select { width:100%; box-sizing:border-box; margin-bottom:8px;}
+.card {
+  background: #f9f9f9;
+  border-radius: 12px;
+  padding: 15px;
+  box-shadow: 0 4px 8px rgba(0,0,0,0.15);
+  margin: 15px 0 15px 50px;
+  max-width: 300px;
+}
+
+.device-icon {
+  width: 50px;
+  height: 50px;
+  margin-bottom: 10px;
+  background-size: cover;
+  transition: transform 0.2s;
+}
+
+.device-icon.pressed {
+  transform: scale(0.85);
+}
+
+input[type=range] {
+  width: 100%;
+  margin: 5px 0 15px 0;
+  -webkit-appearance: none;
+  height: 10px;
+  border-radius: 5px;
+  background: #ddd;
+  transition: background 0.2s;
+}
+
+input[type=range]::-webkit-slider-thumb {
+  -webkit-appearance: none;
+  width: 16px;
+  height: 16px;
+  border-radius: 50%;
+  background: #fff;
+  border: 2px solid #4CAF50;
+  cursor: pointer;
+  box-shadow: 0 0 2px rgba(0,0,0,0.5);
+}
+
+input[type=range]::-moz-range-thumb {
+  width: 16px;
+  height: 16px;
+  border-radius: 50%;
+  background: #fff;
+  border: 2px solid #4CAF50;
+  cursor: pointer;
+}
 </style>
 
 <div class="device-widget controller loadtype_%.loadType%">
-	<div onClick='$("#icon%.object_id%_light").addClass("pressed");setTimeout("$(\"#icon%.object_id%_light\").removeClass(\"pressed\");",300);callMethod("%.object_title%.switch");'>
-		<div class="device-icon %.status|"off;on"%" id="icon%.object_id%_light" style='%.icon|"background-image:url(%.icon%)"%'></div>
-		<div class="device-header">%.object_description%</div>
-	</div>
+  <div onClick='
+      $("#icon%.object_id%_light").addClass("pressed");
+      setTimeout(() => $("#icon%.object_id%_light").removeClass("pressed"), 300);
+      callMethod("%.object_title%.switch");
+  '>
+    <div class="device-icon %.status|"off;on"%" id="icon%.object_id%_light"
+         style='%.icon|"background-image:url(%.icon%)"%'></div>
+  </div>
 </div>
 
 <div class="card">
-	<div class="device-details"> <span id="dimmer%.object_id%_bright">Яркость: %.level%</span></div>
-	<input type="range" min="0" max="100" value="%.level%" oninput="dimmerSetbrightness%.object_id%(this.value);">
-	<div class="device-details"> <span id="dimmer%.object_id%_cct">Температура: %.cctLevel%</span></div>
-	<input type="range" min="0" max="100" value="%.cctLevel%" oninput="dimmerSetcct%.object_id%(this.value);">
-</div>
+  <div class="device-details">
+    <p id="dimmer%.object_id%_bright">Яркость: %.level%</p>
+    <input id="dimmerSelect%.object_id%_bright" type="range" min="0" max="100" step="1"
+           value="%.level%" oninput="setBrightness%.object_id%(this.value)">
 
+    <p id="dimmer%.object_id%_cct">Температура: %.cctLevel%</p>
+    <input id="dimmerSelect%.object_id%_cct" type="range" min="0" max="100" step="1"
+           value="%.cctLevel%" oninput="setCct%.object_id%(this.value)">
+  </div>
+</div>
