@@ -8,7 +8,7 @@ if (SETTINGS_SITE_LANGUAGE && file_exists(ROOT . 'languages/SDimmersCct_' . SETT
 
 $this->device_types['dimmerCct'] = array(
 	'TITLE' => 'Освещение(Яркость,Температура)',
-	'PARENT_CLASS' => 'SDimmers',
+	'PARENT_CLASS' => 'SControllers',
 	'CLASS' => 'SDimmersCct',
 	'PROPERTIES' => array(
 		'level' => array('DESCRIPTION' => 'Яркость (0-100)', 'ONCHANGE' => 'propertysUpdated', 'DATA_KEY' => 1,'VALIDATION_TYPE' => 1, 'VALIDATION_NUM_MIN' => 0, 'VALIDATION_NUM_MAX' => 100),
