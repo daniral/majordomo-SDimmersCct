@@ -1,114 +1,125 @@
 <script type="text/javascript">
-let brightnessTimer%.object_id%, cctTimer%.object_id%;
+// Проверяем, существует ли объект dimmer для этой лампы
+if (typeof window.dimmer === 'undefined') window.dimmer = {};
+if (typeof window.dimmer%.object_id% === 'undefined') window.dimmer%.object_id% = {
+  level: %.level%,
+  cct: %.cct%
+};
 
+// --- Яркость ---
 function sendNewBrightness%.object_id%() {
-  callMethod('%.object_title%.setLevel', 'value=' + dimmer%.object_id%.level);
+  callMethod('%.object_title%.setLevel', 'value=' + window.dimmer%.object_id%.level);
 }
 
-function setBrightness%.object_id%(val) {
+function previewBrightness%.object_id%(val) {
   val = parseInt(val);
-  dimmer%.object_id%.level = val;
-  $('#dimmer%.object_id%_bright').html("Яркость: " + val + "%");
-  
-  // обновляем градиент ползунка
-  $('#dimmerSelect%.object_id%_bright').css(
-      'background', `linear-gradient(to right, #4CAF50 ${val}%, #ddd ${val}%)`
-  );
-
-  clearTimeout(brightnessTimer%.object_id%);
-  brightnessTimer%.object_id% = setTimeout(() => sendNewBrightness%.object_id%(), 150);
+  window.dimmer%.object_id%.level = val;
+  $('#dimmer%.object_id%_bright').text("Яркость: " + val + "%");
+  updateSliderFill('#dimmerSelect%.object_id%_bright', val, '#4CAF50');
 }
 
+// --- Температура ---
 function sendNewCct%.object_id%() {
-  callMethod('%.object_title%.setCct', 'value=' + dimmer%.object_id%.cctLevel);
+  callMethod('%.object_title%.setCct', 'value=' + window.dimmer%.object_id%.cct);
 }
 
-function setCct%.object_id%(val) {
+function previewCct%.object_id%(val) {
   val = parseInt(val);
-  dimmer%.object_id%.cctLevel = val;
-  $('#dimmer%.object_id%_cct').html("Температура: " + val + "%");
-  
-  $('#dimmerSelect%.object_id%_cct').css(
-      'background', `linear-gradient(to right, #FFB74D ${val}%, #ddd ${val}%)`
-  );
+  window.dimmer%.object_id%.cct = val;
+  $('#dimmer%.object_id%_cct').text("Температура: " + val + "%");
+  updateSliderFill('#dimmerSelect%.object_id%_cct', val, '#f7a800');
+}
 
-  clearTimeout(cctTimer%.object_id%);
-  cctTimer%.object_id% = setTimeout(() => sendNewCct%.object_id%(), 150);
+// --- Обновление фона ползунка ---
+function updateSliderFill(selector, value, color) {
+  const slider = document.querySelector(selector);
+  const percentage = value;
+  slider.style.background = `linear-gradient(90deg, ${color} ${percentage}%, #ddd ${percentage}%)`;
 }
 </script>
 
 <style>
 .card {
-  background: #f9f9f9;
-  border-radius: 12px;
-  padding: 15px;
-  box-shadow: 0 4px 8px rgba(0,0,0,0.15);
-  margin: 15px 0 15px 50px;
-  max-width: 300px;
+  background: #fff;
+  border-radius: 16px;
+  padding: 20px;
+  box-shadow: 0 4px 20px rgba(0,0,0,0.1);
+  margin: 20px 0 20px 50px;
+  max-width: 320px;
+  font-family: "Segoe UI", sans-serif;
 }
 
-.device-icon {
-  width: 50px;
-  height: 50px;
-  margin-bottom: 10px;
-  background-size: cover;
-  transition: transform 0.2s;
-}
-
-.device-icon.pressed {
-  transform: scale(0.85);
+.device-details p {
+  margin: 8px 0 4px;
+  font-weight: 500;
+  color: #333;
 }
 
 input[type=range] {
   width: 100%;
-  margin: 5px 0 15px 0;
-  -webkit-appearance: none;
-  height: 10px;
+  height: 8px;
   border-radius: 5px;
-  background: #ddd;
-  transition: background 0.2s;
+  outline: none;
+  background: linear-gradient(90deg, #ddd 0%, #ddd 0%);
+  transition: background 0.2s ease;
+  -webkit-appearance: none;
 }
 
 input[type=range]::-webkit-slider-thumb {
   -webkit-appearance: none;
-  width: 16px;
-  height: 16px;
+  appearance: none;
+  width: 20px;
+  height: 20px;
   border-radius: 50%;
-  background: #fff;
-  border: 2px solid #4CAF50;
+  background: white;
+  border: 3px solid currentColor;
+  box-shadow: 0 0 6px rgba(0,0,0,0.3);
   cursor: pointer;
-  box-shadow: 0 0 2px rgba(0,0,0,0.5);
+  transition: transform 0.15s ease;
 }
 
-input[type=range]::-moz-range-thumb {
-  width: 16px;
-  height: 16px;
-  border-radius: 50%;
-  background: #fff;
-  border: 2px solid #4CAF50;
-  cursor: pointer;
+input[type=range]::-webkit-slider-thumb:hover {
+  transform: scale(1.2);
+}
+
+#dimmerSelect%.object_id%_bright {
+  color: #4CAF50;
+}
+
+#dimmerSelect%.object_id%_cct {
+  color: #f7a800;
 }
 </style>
 
 <div class="device-widget controller loadtype_%.loadType%">
-  <div onClick='
-      $("#icon%.object_id%_light").addClass("pressed");
-      setTimeout(() => $("#icon%.object_id%_light").removeClass("pressed"), 300);
-      callMethod("%.object_title%.switch");
-  '>
-    <div class="device-icon %.status|"off;on"%" id="icon%.object_id%_light"
-         style='%.icon|"background-image:url(%.icon%)"%'></div>
+  <div onclick="callMethod('%.object_title%.switch');">
+    <div class="device-icon %.status|'off;on'%" id="icon%.object_id%_light"
+         style="%.icon|'background-image:url(%.icon%)'%"></div>
   </div>
 </div>
 
 <div class="card">
   <div class="device-details">
-    <p id="dimmer%.object_id%_bright">Яркость: %.level%</p>
-    <input id="dimmerSelect%.object_id%_bright" type="range" min="0" max="100" step="1"
-           value="%.level%" oninput="setBrightness%.object_id%(this.value)">
+    <p id="dimmer%.object_id%_bright">Яркость: %.level%%</p>
+    <input id="dimmerSelect%.object_id%_bright" 
+           type="range" min="0" max="100" step="1"
+           value="%.level%" 
+           oninput="previewBrightness%.object_id%(this.value)"
+           onmouseup="sendNewBrightness%.object_id%()"
+           ontouchend="sendNewBrightness%.object_id%()">
 
-    <p id="dimmer%.object_id%_cct">Температура: %.cctLevel%</p>
-    <input id="dimmerSelect%.object_id%_cct" type="range" min="0" max="100" step="1"
-           value="%.cctLevel%" oninput="setCct%.object_id%(this.value)">
+    <p id="dimmer%.object_id%_cct">Температура: %.cct%%</p>
+    <input id="dimmerSelect%.object_id%_cct" 
+           type="range" min="0" max="100" step="1"
+           value="%.cct%" 
+           oninput="previewCct%.object_id%(this.value)"
+           onmouseup="sendNewCct%.object_id%()"
+           ontouchend="sendNewCct%.object_id%()">
   </div>
 </div>
+
+<script>
+// Инициализация фона ползунков при загрузке
+updateSliderFill('#dimmerSelect%.object_id%_bright', %.level%, '#4CAF50');
+updateSliderFill('#dimmerSelect%.object_id%_cct', %.cct%, '#f7a800');
+</script>
