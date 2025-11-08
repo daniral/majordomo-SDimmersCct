@@ -29,12 +29,18 @@ $cctMaxWork    = $this->getProperty('cctMaxWork');
 // Рассчитываем рабочее значение
 if ($property == 'level' && $levelMinWork != $levelMaxWork && $source != 'worksUpdated') {
     $workValue = round($levelMinWork + ($levelMaxWork - $levelMinWork) * $newValue / 100);
+	if($newValue>0)
+		$this->setProperty($property . 'Saved', $newValue);
 } elseif ($property == 'cct' && $cctMinWork != $cctMaxWork && $source != 'worksUpdated') {
     $workValue = round($cctMinWork + ($cctMaxWork - $cctMinWork) * $newValue / 100);
+	$this->setProperty($property . 'Saved', $newValue);
 } else {
     return;
 }
+if ($property == 'cct' && !$status){
+    $this->setProperty('level', $this->getProperty('levelSaved'));
 
+}
 // Устанавливаем рабочее значение и сохранённое
 $this->setProperty($property . 'Work', $workValue, 'propertysUpdated');
-$this->setProperty($property . 'Saved', $newValue);
+//$this->setProperty($property . 'Saved', $newValue);

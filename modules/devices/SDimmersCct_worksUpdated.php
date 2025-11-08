@@ -40,6 +40,9 @@ $newValue = max(0, min(100, $newValue));
 if ($newValue != $this->getProperty($targetProperty)) {
     $this->setProperty($targetProperty, $newValue, 'worksUpdated');
 }
-
+if ($targetProperty == 'cct' && !$status){
+	$this->setProperty('level', $this->getProperty('levelSaved'), 'worksUpdated');
+}
 // Сохраняем последнее значение
-$this->setProperty($targetProperty . 'Saved', $newValue);
+if($newValue>0)
+	$this->setProperty($targetProperty . 'Saved', $newValue);
