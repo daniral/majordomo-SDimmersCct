@@ -3,31 +3,46 @@
 if (typeof window.dimmer === 'undefined') window.dimmer = {};
 if (typeof window.dimmer%.object_id% === 'undefined') window.dimmer%.object_id% = {
   level: %.level%,
-  cct: %.cct%
+  cct: %.cct%,
+  dragging: false
 };
 
-// --- Яркость ---
-function sendNewBrightness%.object_id%() {
-  callMethod('%.object_title%.setLevel', 'value=' + window.dimmer%.object_id%.level);
-}
+// --- Debounce функции ---
+let brightnessTimeout%.object_id%;
+let cctTimeout%.object_id%;
 
+// --- Яркость ---
 function previewBrightness%.object_id%(val) {
   val = parseInt(val);
+  window.dimmer%.object_id%.dragging = true; // Пользователь тянет
   window.dimmer%.object_id%.level = val;
   $('#dimmer%.object_id%_bright').text("Яркость: " + val + "%");
   updateSliderFill('#dimmerSelect%.object_id%_bright', val, '#4CAF50');
 }
 
-// --- Температура ---
-function sendNewCct%.object_id%() {
-  callMethod('%.object_title%.setCct', 'value=' + window.dimmer%.object_id%.cct);
+function sendNewBrightness%.object_id%() {
+  window.dimmer%.object_id%.dragging = false; // Отпустил
+  clearTimeout(brightnessTimeout%.object_id%);
+  brightnessTimeout%.object_id% = setTimeout(() => {
+      callMethod('%.object_title%.setLevel', 'value=' + window.dimmer%.object_id%.level);
+  }, 200); // debounce 200ms
 }
 
+// --- Цветовая температура ---
 function previewCct%.object_id%(val) {
   val = parseInt(val);
+  window.dimmer%.object_id%.dragging = true;
   window.dimmer%.object_id%.cct = val;
   $('#dimmer%.object_id%_cct').text("Температура: " + val + "%");
   updateSliderFill('#dimmerSelect%.object_id%_cct', val, '#f7a800');
+}
+
+function sendNewCct%.object_id%() {
+  window.dimmer%.object_id%.dragging = false;
+  clearTimeout(cctTimeout%.object_id%);
+  cctTimeout%.object_id% = setTimeout(() => {
+      callMethod('%.object_title%.setCct', 'value=' + window.dimmer%.object_id%.cct);
+  }, 200); // debounce 200ms
 }
 
 // --- Обновление фона ползунка ---
@@ -35,6 +50,22 @@ function updateSliderFill(selector, value, color) {
   const slider = document.querySelector(selector);
   const percentage = value;
   slider.style.background = `linear-gradient(90deg, ${color} ${percentage}%, #ddd ${percentage}%)`;
+}
+
+// --- Обновление слайдера с сервера ---
+function updateFromServer(level, cct) {
+  if (!window.dimmer%.object_id%.dragging) { 
+      window.dimmer%.object_id%.level = level;
+      window.dimmer%.object_id%.cct = cct;
+
+      $('#dimmer%.object_id%_bright').text("Яркость: " + level + "%");
+      $('#dimmerSelect%.object_id%_bright').val(level);
+      updateSliderFill('#dimmerSelect%.object_id%_bright', level, '#4CAF50');
+
+      $('#dimmer%.object_id%_cct').text("Температура: " + cct + "%");
+      $('#dimmerSelect%.object_id%_cct').val(cct);
+      updateSliderFill('#dimmerSelect%.object_id%_cct', cct, '#f7a800');
+  }
 }
 </script>
 

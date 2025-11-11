@@ -20,28 +20,28 @@
 
 **Для лампочек Xiaomi ZigBee**  
 
-- maxWork - 254  
-- minWork - 0  
+- levelMaxWork - 254  
+- levelMinWork - 0  
 - cctMaxWork - 370  
 - cctMinWork - 153  
 
 **Для для лампочек Tuta ZigBee**  
 
-- maxWork - 254  
-- minWork - 0  
+- levelMaxWork - 254  
+- levelMinWork - 0  
 - cctMaxWork - 500  
 - cctMinWork - 153  
 
 ### **ОБЫЧНЫЙ РЕЖИМ:**  
 
 Включить - callMethod('имя объекта '.'turnOn');  
-Если без параметров установит то что в levelSaved и cctSeved.  
-Если levelSaved и cctSeved пусто то на полную яркость(100%) и холодный цвет(0%).  
+Если без параметров установит то что в levelSaved и cctSaved.  
+Если levelSaved и cctSaved пусто то на полную яркость(100%) и холодный цвет(0%).  
 
 С параметрами:  
-- callMethod('имя объекта.turnOn', array('level'=> 1<-->100, 'cctLevel'=> 0<-->100));  
+- callMethod('имя объекта.turnOn', array('level'=> 1<-->100, 'cct'=> 0<-->100));  
 - callMethod('имя объекта.turnOn', array('level'=> 1<-->100));  
-- callMethod('имя объекта.turnOn', array('cctLevel'=> 0<-->100));  
+- callMethod('имя объекта.turnOn', array('cct'=> 0<-->100));  
   - Вместо процентов можно вызвать пресеты:'cool','neutral','warm'.   
 
 **Устанавливается flag=1. Стопер который не дает запускаться авто режиму и методу autoOff.**  
@@ -78,25 +78,25 @@
       - если illuminance меньше чем установленно в illuminanceMax подсветка включится.  
     - ***Работу по датчику освещения не проверял так как не имеется в наличии.***   
 - **Можно запустить авто режим с параметрами:**  
-  - callMethod('имя объекта.turnOn', array('autoMode'=>1, 'level'=> 1<--> 100,'cctLevel'=> 0<-->100));  
+  - callMethod('имя объекта.turnOn', array('autoMode'=>1, 'level'=> 1<--> 100,'cct'=> 0<-->100));  
 
 ## **МЕТОДЫ:**  
 
 - **turnOn**   
   - Включить - callMethod('имя объекта '.'turnOn');  
-    - Если без параметров установит то что в levelSaved и cctSeved.  
-    - Если levelSaved и cctSeved пусто то на полную яркость(100%) и холодный цвет(0%).  
+    - Если без параметров установит то что в levelSaved и cctSaved.  
+    - Если levelSaved и cctSaved пусто то на полную яркость(100%) и холодный цвет(0%).  
     - **Устанавливается flag=1. Стопер который не дает запускаться авто режиму и методу autoOff.**  
     - С параметрами:  
-      - callMethod('имя объекта.turnOn', array('level'=> 1<-->100, 'cctLevel'=> 0<-->100));  
+      - callMethod('имя объекта.turnOn', array('level'=> 1<-->100, 'cct'=> 0<-->100));  
       - callMethod('имя объекта.turnOn', array('level'=> 1<-->100));  
-      - callMethod('имя объекта.turnOn', array('cctLevel'=> 0<-->100));  
+      - callMethod('имя объекта.turnOn', array('cct'=> 0<-->100));  
       - Вместо процентов можно вызвать пресеты:'cool','neutral','warm'.   
   - Включить авто режим - callMethod('имя объекта.turnOn', array('autoMode'=>1));   
     - С параметрами:
-      - callMethod('имя объекта.turnOn', array('autoMode'=>1, 'level'=> 1<-->100, 'cctLevel'=> 0<-->100));  
+      - callMethod('имя объекта.turnOn', array('autoMode'=>1, 'level'=> 1<-->100, 'cct'=> 0<-->100));  
       - callMethod('имя объекта.turnOn', array('autoMode'=>1, 'level'=> 1<-->100));  
-      - callMethod('имя объекта.turnOn', array('autoMode'=>1, 'cctLevel'=> 0<-->100));  
+      - callMethod('имя объекта.turnOn', array('autoMode'=>1, 'cct'=> 0<-->100));  
       - Вместо процентов можно вызвать пресеты:'cool','neutral','warm'.   
 - **turnOff**  
   - Выключить - callMethod('имя объекта '.'turnOff');  

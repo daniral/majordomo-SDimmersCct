@@ -2,13 +2,16 @@
 
 $dictionary = array(
 
- 'SDimmersCct_PATTERN_BRIGHTNESS' => 'brightness',
- 'SDimmersCct_PATTERN_TEMPERATURE' => 'temperature'
+    // Brightness control
+    'SDimmersCct_PATTERN_BRIGHTNESS' => 'bright|brightness|lighter|dimmer|light level|increase light|decrease light',
+
+    // Color temperature control
+    'SDimmersCct_PATTERN_TEMPERATURE' => 'temperature|color|warm|cool|cold|neutral|tone|whit|yellow|blue'
 
 );
 
 foreach ($dictionary as $k => $v) {
- if (!defined('LANG_' . $k)) {
-  @define('LANG_' . $k, $v);
- }
+    if (!defined('LANG_' . $k)) {
+        @define('LANG_' . $k, $v);
+    }
 }

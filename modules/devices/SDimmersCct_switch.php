@@ -1,15 +1,18 @@
 <?php
 /*
-Переключить состояние Вкл/Выкл.
-если было включено в авто режиме то включить то что в levelSaved и cctSeved.
-Еще запуск выключит.
-Если было выключено включет то что в levelSaved и cctSeved.
+Переключить состояние.
+Если было включено в авто режиме то включить то что в levelSaved и cctSaved.
+Если было выключено включет то что в levelSaved и cctSaved.
+Если было включено не в авто режиме то выключить.
 */
 
-if (!$this->getProperty('status') && !$this->getProperty('flag')) {
-  $this->callMethod('turnOn');
-} else if ($this->getProperty('status') && !$this->getProperty('flag')) {
-  $this->callMethod('turnOn');
-} else if ($this->getProperty('status') && $this->getProperty('flag')) {
-  $this->callMethod('turnOff');
+$status = (int)$this->getProperty('status');
+$flag   = (int)$this->getProperty('flag');
+
+if ($flag && $status) {
+    // В авто режиме и уже включена — выключаем
+    $this->callMethod('turnOff');
+} else {
+    // Во всех остальных случаях — включаем
+    $this->callMethod('turnOn');
 }

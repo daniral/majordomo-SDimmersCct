@@ -1,4 +1,16 @@
 <?php
+/**
+ * Обработчик изменения рабочих свойств (levelWork, cctWork).
+ *
+ * Пересчитывает рабочее значение обратно в диапазон 0–100
+ * и обновляет основное свойство (level или cct).
+ *
+ * @param array $params [
+ *     'SOURCE'    => string, // источник изменения
+ *     'PROPERTY'  => string, // изменённое свойство (levelWork/cctWork)
+ *     'NEW_VALUE' => int,    // новое значение
+ * ]
+ */
 
 $status   = $this->getProperty('status');
 $source   = strtok($params['SOURCE'] ?? '', ' ');
@@ -32,17 +44,23 @@ if ($minWork == $maxWork || $source === 'propertysUpdated') return;
 // Ограничиваем значение строго в рамках диапазона
 $workValue = max($minWork, min($maxWork, $workValue));
 
-// Пересчитываем 0–100
+// Пересчитываем значение в проценты (0–100)
 $newValue = (int)round(($workValue - $minWork) / ($maxWork - $minWork) * 100);
 $newValue = max(0, min(100, $newValue));
 
-// Обновляем основное свойство, если изменилось
+// Обновляем основное свойство, если значение изменилось
 if ($newValue != $this->getProperty($targetProperty)) {
     $this->setProperty($targetProperty, $newValue, 'worksUpdated');
 }
-if ($targetProperty == 'cct' && !$status){
-	$this->setProperty('level', $this->getProperty('levelSaved'), 'worksUpdated');
+
+// При изменении CCT и выключенном статусе восстанавливаем уровень
+if ($targetProperty === 'cct' && !$status) {
+    $this->setProperty('level', $this->getProperty('levelSaved'), 'worksUpdated');
 }
-// Сохраняем последнее значение
-if($newValue>0)
-	$this->setProperty($targetProperty . 'Saved', $newValue);
+
+// Сохраняем текущее значение для восстановления
+if ($targetProperty === 'level' && $newValue > 0) {
+    $this->setProperty('levelSaved', $newValue);
+} elseif ($targetProperty === 'cct') {
+    $this->setProperty('cctSaved', $newValue);
+}

@@ -1,46 +1,62 @@
 <?php
+/**
+ * Обработчик изменения свойств (level, cct, presence).
+ * 
+* Рабочие диапазоны:
+ * - levelMinWork / levelMaxWork
+ * - cctMinWork / cctMaxWork
+ */
 
 $status   = $this->getProperty('status');
-$source   = strtok($params['SOURCE'], " ");
+$source   = strtok($params['SOURCE'], ' ');
 $property = $params['PROPERTY'];
 
-$val = $params['NEW_VALUE'] ?? null;
-if (!is_numeric($val)) return;
+$value = normalizeRange($params['NEW_VALUE'] ?? null);
+if ($value === null) return;
 
-// Ограничиваем значение 0..100
-$newValue = max(0, min(100, $val));
+// Сохраняем, если значение действительно изменилось
+if ($value != ($params['OLD_VALUE'] ?? 0) && $value != $this->getProperty($property)) {
+    $this->setProperty($property, $value, 'worksUpdated');
+} else {
+    return;
+}
 
-// Сохраняем, если значение вышло за пределы или отличается от текущего
-if ($newValue != ($params['OLD_VALUE'] ?? 0)) {
-    if ($newValue != $this->getProperty($property)) {
-        $this->setProperty($property, $newValue, 'worksUpdated');
+// Получаем min/max для вычисления рабочих значений
+$levelMinWork = $this->getProperty('levelMinWork');
+$levelMaxWork = $this->getProperty('levelMaxWork');
+$cctMinWork   = $this->getProperty('cctMinWork');
+$cctMaxWork   = $this->getProperty('cctMaxWork');
+
+// При ручном управлении сбрасываем автофлаг
+if ($source !== 'autoMode') {
+    $this->setProperty('flag', 1);
+}
+
+// Рассчитываем рабочее значение и сохраняем текущее, если нужно
+if ($property === 'level' && $levelMinWork != $levelMaxWork && $source !== 'worksUpdated') {
+    $workValue = round($levelMinWork + ($levelMaxWork - $levelMinWork) * $value / 100);
+    if ($value > 0 && $this->getProperty('flag')) {
+        $this->setProperty('levelSaved', $value);
     }
+
+} elseif ($property === 'cct' && $cctMinWork != $cctMaxWork && $source !== 'worksUpdated') {
+    $workValue = round($cctMinWork + ($cctMaxWork - $cctMinWork) * $value / 100);
+    if ($this->getProperty('flag')) {
+        $this->setProperty('cctSaved', $value);
+    }
+
+} elseif ($property === 'presence' && !$value) {
+    autoOff($this);
+    return;
+
 } else {
     return;
 }
 
-// Получаем min/max значения для level и cct
-$levelMinWork  = $this->getProperty('levelMinWork');
-$levelMaxWork  = $this->getProperty('levelMaxWork');
-
-$cctMinWork    = $this->getProperty('cctMinWork');
-$cctMaxWork    = $this->getProperty('cctMaxWork');
-
-// Рассчитываем рабочее значение
-if ($property == 'level' && $levelMinWork != $levelMaxWork && $source != 'worksUpdated') {
-    $workValue = round($levelMinWork + ($levelMaxWork - $levelMinWork) * $newValue / 100);
-	if($newValue>0)
-		$this->setProperty($property . 'Saved', $newValue);
-} elseif ($property == 'cct' && $cctMinWork != $cctMaxWork && $source != 'worksUpdated') {
-    $workValue = round($cctMinWork + ($cctMaxWork - $cctMinWork) * $newValue / 100);
-	$this->setProperty($property . 'Saved', $newValue);
-} else {
-    return;
-}
-if ($property == 'cct' && !$status){
+// При изменении cct и выключенном статусе восстанавливаем уровень яркости
+if ($property === 'cct' && !$status) {
     $this->setProperty('level', $this->getProperty('levelSaved'));
-
 }
-// Устанавливаем рабочее значение и сохранённое
+
+// Устанавливаем вычисленное рабочее значение
 $this->setProperty($property . 'Work', $workValue, 'propertysUpdated');
-//$this->setProperty($property . 'Saved', $newValue);
