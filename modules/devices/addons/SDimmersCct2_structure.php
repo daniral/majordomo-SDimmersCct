@@ -1,15 +1,15 @@
 <?php
 
-if (SETTINGS_SITE_LANGUAGE && file_exists(ROOT . 'languages/SDimmersCct_' . SETTINGS_SITE_LANGUAGE . '.php')) {
-	include_once(ROOT . 'languages/SDimmersCct_' . SETTINGS_SITE_LANGUAGE . '.php');
+if (SETTINGS_SITE_LANGUAGE && file_exists(ROOT . 'languages/SDimmersCct2_' . SETTINGS_SITE_LANGUAGE . '.php')) {
+	include_once(ROOT . 'languages/SDimmersCct2_' . SETTINGS_SITE_LANGUAGE . '.php');
 } else {
-	include_once(ROOT . 'languages/SDimmersCct_default.php'); //
+	include_once(ROOT . 'languages/SDimmersCct2_default.php'); //
 }
 
-$this->device_types['dimmerCct'] = array(
-	'TITLE' => 'Освещение(Яркость,Температура)',
+$this->device_types['dimmerCct2'] = array(
+	'TITLE' => 'Освещение2(Яркость,Температура)',
 	'PARENT_CLASS' => 'SDimmers',
-	'CLASS' => 'SDimmersCct',
+	'CLASS' => 'SDimmersCct2',
 	'PROPERTIES' => array(
 		'level' => array('DESCRIPTION' => 'Яркость (0<-->100)', 'ONCHANGE' => 'propertysUpdated', 'DATA_KEY' => 1,'VALIDATION_TYPE' => 1, 'VALIDATION_NUM_MIN' => 0, 'VALIDATION_NUM_MAX' => 100),
 		'levelWork' => array('DESCRIPTION' => 'Рабочая яркость.', 'ONCHANGE' => 'worksUpdated'),

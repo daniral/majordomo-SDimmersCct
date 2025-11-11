@@ -1,6 +1,6 @@
 <?php
 
-if ($device_type == 'SDimmersCct') {
+if ($device_type == 'SDimmersCct2') {
 
     // --- ВКЛ / ВЫКЛ / ПЕРЕКЛЮЧИТЬ ---
     if (preg_match('/' . LANG_DEVICES_PATTERN_TURNON . '/uis', $command)) {
@@ -25,7 +25,7 @@ if ($device_type == 'SDimmersCct') {
     }
 
     // --- ЯРКОСТЬ ---
-    elseif (preg_match('/' . LANG_SDimmersCct_PATTERN_BRIGHTNESS . '/uis', $command)) {
+    elseif (preg_match('/' . LANG_SDimmersCct2_PATTERN_BRIGHTNESS . '/uis', $command)) {
         $currentLevel = (int)getGlobal("$linked_object.level");
         $step = 10;
 
@@ -50,7 +50,7 @@ if ($device_type == 'SDimmersCct') {
     }
 
     // --- ЦВЕТОВАЯ ТЕМПЕРАТУРА ---
-    elseif (preg_match('/' . LANG_SDimmersCct_PATTERN_TEMPERATURE . '/uis', $command)) {
+    elseif (preg_match('/' . LANG_SDimmersCct2_PATTERN_TEMPERATURE . '/uis', $command)) {
         $currentCct = (int)getGlobal("$linked_object.cct");
         $step = 10;
 
