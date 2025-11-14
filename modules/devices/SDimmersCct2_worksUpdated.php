@@ -47,11 +47,6 @@ $workValue = max($minWork, min($maxWork, $workValue));
 // Пересчитываем значение в проценты (0–100)
 $newValue = max(0, min(100, (int)round(($workValue - $minWork) / ($maxWork - $minWork) * 100)));
 
-if ($targetProperty=='level' && $newValue == 0) {
-	$this->callMethod('turnOff');
-	return;
-}
-
 // Устанавливаем вычисленное значение
 $this->setProperty($targetProperty, $newValue, 'worksUpdated');
 
