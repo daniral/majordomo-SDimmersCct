@@ -1,5 +1,29 @@
 <?php
-	
+/**
+ * normalizeRange($val, $min, $max) — Проверяет и нормализует значение (число или HEX) в заданный диапазон.
+ * hsvToRgbHex($hsvHex) — Конвертирует 12-значный Tuya HSV в RGB HEX и яркость.
+ * rgbToHSVhex($rgbHex, $brightness) — Конвертирует RGB HEX + яркость в 12-значный Tuya HSV HEX.
+ * dimmerTime($time, $addTime, $sign) — Вычисляет новое время с поправкой (добавить/вычесть HH:MM).
+ * autoOff($object, $timer, $flag, $presence) — Запускает таймер автоотключения лампы.
+ * initDefaults($object, $defaults) — Инициализирует свойства объекта по умолчанию.
+ * getAutoLevelCct($object, $level, $cct) — Получает текущие значения яркости и CCT для авто режима.
+ * adjustProperty($obj, $property, $value, $direction, $defaultStep, $min, $max) — Универсальное изменение свойства (увеличить/уменьшить).
+ * createObjectMenu($objectName, $menuItems, $parentId, $insertID, $depth) — Создает меню управления объектом рекурсивно.
+ * 
+ *| Функция            | Назначение                                              |
+ *| ------------------ | ------------------------------------------------------- |
+ *| `normalizeRange`   | Нормализует число или HEX в диапазон                    |
+ *| `hsvToRgbHex`      | Преобразует 12-значный Tuya HSV в RGB + яркость         |
+ *| `rgbToHSVhex`      | Преобразует RGB + яркость в 12-значный Tuya HSV         |
+ *| `dimmerTime`       | Корректирует время с учётом смещения                    |
+ *| `autoOff`          | Таймер автоотключения лампы                             |
+ *| `initDefaults`     | Устанавливает свойства объекта по умолчанию             |
+ *| `getAutoLevelCct`  | Получает текущие значения яркости и CCT для авто режима |
+ *| `adjustProperty`   | Универсальное изменение свойства (яркость/температура)  |
+ *| `createObjectMenu` | Создает меню управления объектом рекурсивно             |
+*/
+
+
 /** Проверяет и нормализует значение: числовое или HEX (цвет/яркость).
  * normalizeRange($val, $min, $max) 
  * @param mixed $val  Входное значение (число или HEX)
@@ -148,7 +172,7 @@ if (!function_exists('autoOff')) {
 		elseif(is_numeric($presence)) $presenceValue=$presence;
 
 		if($timerValue===0) return;
-		$timerCode="if(!getGlobal('{$flag}')&&!getGlobal('{$presence}')) callMethod('{$name}.turnOff');";
+		$timerCode = "if(!getGlobal('{$name}.{$flag}') && !getGlobal('{$name}.{$presence}')) callMethod('{$name}.turnOff');";
 		setTimeOut($name.'Timer', $timerCode, $timerValue);
 	}
 }
@@ -188,10 +212,10 @@ if (!function_exists('getAutoLevelCct')) {
 		$currentCct = null;
 
 		if($object->getProperty('workingBy')!=3) {
-			if(($object->getProperty('workingDay')==2 || $object->getProperty('workingDay')==0) && timeBetween($nightBegin,$dayBegin)) {
+			if(($object->getProperty('workingDay')==2 || $object->getProperty('workingDay')==3) && timeBetween($nightBegin,$dayBegin)) {
 				$currentLevel=$level ?? $object->getProperty('nightLevel');
 				$currentCct=$cct ?? $object->getProperty('nightCct');
-			} elseif(($object->getProperty('workingDay')==1 || $object->getProperty('workingDay')==0) && timeBetween($dayBegin,$nightBegin)) {
+			} elseif(($object->getProperty('workingDay')==1 || $object->getProperty('workingDay')==3) && timeBetween($dayBegin,$nightBegin)) {
 				$currentLevel=$level ?? $object->getProperty('dayLevel');
 				$currentCct=$cct ?? $object->getProperty('dayCct');
 			}

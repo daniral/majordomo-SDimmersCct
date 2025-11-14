@@ -1,4 +1,18 @@
 <?php
+/**
+ * ============================================================
+ * Dictionary for SDimmersCct2 lamp control
+ * ============================================================
+ *
+ * $dictionary - array defining patterns to recognize commands:
+ *   - 'SDimmersCct2_PATTERN_BRIGHTNESS': keywords for brightness control
+ *   - 'SDimmersCct2_PATTERN_TEMPERATURE': keywords for color temperature control
+ *
+ * Each value is a string with keywords separated by |
+ * Constants with the LANG_ prefix are defined for each key
+ *   e.g., LANG_SDimmersCct2_PATTERN_BRIGHTNESS
+ * These constants are used to recognize text or voice commands.
+ */
 
 $dictionary = array(
 

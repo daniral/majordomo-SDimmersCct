@@ -16,7 +16,7 @@ $this->device_types['dimmerCct2'] = array(
 		'levelSaved' => array('DESCRIPTION' => 'Сохраненная яркость.','VALIDATION_TYPE' => 1, 'VALIDATION_NUM_MIN' => 0, 'VALIDATION_NUM_MAX' => 100),
 		'levelMaxWork' => array('DESCRIPTION' => 'Максимальная рабочая яркость', '_CONFIG_TYPE' => 'num'),
 		'levelMinWork' => array('DESCRIPTION' => 'Минимальная рабочая яркость', '_CONFIG_TYPE' => 'num'),
-		'cct' => array('DESCRIPTION' => 'Уровень температуры: (0-100)', 'ONCHANGE' => 'propertysUpdated', 'DATA_KEY' => 1,'VALIDATION_TYPE' => 1, 'VALIDATION_NUM_MIN' => 0, 'VALIDATION_NUM_MAX' => 100),
+		'cct' => array('DESCRIPTION' => 'Уровень температуры: (0-100)', 'ONCHANGE' => 'propertysUpdated', 'DATA_KEY' => 1),
 		'cctWork' => array('DESCRIPTION' => 'Рабочая теплота.', 'ONCHANGE' => 'worksUpdated'),
 		'cctSaved' => array('DESCRIPTION' => 'Сохраненная теплота.','VALIDATION_TYPE' => 1, 'VALIDATION_NUM_MIN' => 0, 'VALIDATION_NUM_MAX' => 100),
 		'cctMaxWork' => array('DESCRIPTION' => 'Максимальная рабочая теплота', '_CONFIG_TYPE' => 'num'),

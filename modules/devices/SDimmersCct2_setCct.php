@@ -1,30 +1,23 @@
 <?php
 
-/*
-Флаг 1 - авто режим и автовыключение не запустится.
-Установить температуру.(array("value"=>0 <--> 100 %))
-Вместо процентов можно вызвать пресеты:'coolest','cool','warm','warmest'.
-*/
-
+/**
+ * Устанавливает цветовую температуру лампы.
+ *   
+ * Принимает массив параметров с ключом 'value', где указана температура в процентах
+ * или один из строковых пресетов:
+ *   - 'coolest'
+ *   - 'cool'
+ *   - 'warm'
+ *   - 'warmest'
+ *
+ *  array("value"=>0 <--> 100 %);
+ * 
+ * @param array{
+ *     value: int|string|null   // Цветовая температура 0–100% или строковый пресет
+ * } $params Ассоциативный массив параметров.
+ *
+ * @return void
+ */
 if (!isset($params['value'])) return;
 
-$value = strtolower(trim($params['value']));
-$cctOld = $this->getProperty('cctSaved') ?? 0;
-
-$presets = [
-    'coolest' => 0,
-    'cool'    => 33,
-    'warm'    => 66,
-    'warmest' => 100,
-];
-
-if (isset($presets[$value])) {
-    $cct = $presets[$value];
-} elseif (is_numeric($value)) {
-    // ограничиваем диапазон 0–100
-    $cct = max(0, min(100, (int)$value));
-} else {
-    $cct = $cctOld;
-}
-
-$this->setProperty('cct', $cct);
+$this->setProperty('cct', $params['value'] ?? null, 'setLevelCct');

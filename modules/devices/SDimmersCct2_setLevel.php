@@ -1,11 +1,17 @@
 <?php
 
-/*
-Флаг 1 - авто режим и автовыключение не запустится.
-Установить яркость света.(array("value"=> 0 <--> 100 %))
-*/
+/**
+ * Устанавливает яркость света лампы.
+ *
+ * Принимает массив параметров с ключом 'value', где указана яркость.
+ *
+ * @param array{
+ *     value: int|null   // Яркость лампы в процентах (0–100)
+ * } $params Ассоциативный массив параметров.
+ *
+ * @return void
+ */
 
-$value = normalizeRange($params['value'] ?? null);
-if ($value === null) return;
+if (!isset($params['value'])) return;
 
-$this->setProperty('level', $value);
+$this->setProperty('level', $params['value'] ?? null, 'setLevelCct');

@@ -33,7 +33,7 @@ switch ($property) {
         $maxWork = $this->getProperty('cctMaxWork');
         $targetProperty = 'cct';
         break;
-
+		
     default:
         return;
 }
@@ -45,22 +45,18 @@ if ($minWork == $maxWork || $source === 'propertysUpdated') return;
 $workValue = max($minWork, min($maxWork, $workValue));
 
 // Пересчитываем значение в проценты (0–100)
-$newValue = (int)round(($workValue - $minWork) / ($maxWork - $minWork) * 100);
-$newValue = max(0, min(100, $newValue));
+$newValue = max(0, min(100, (int)round(($workValue - $minWork) / ($maxWork - $minWork) * 100)));
 
-// Обновляем основное свойство, если значение изменилось
-if ($newValue != $this->getProperty($targetProperty)) {
-    $this->setProperty($targetProperty, $newValue, 'worksUpdated');
+if ($targetProperty=='level' && $newValue == 0) {
+	$this->callMethod('turnOff');
+	return;
 }
 
-// При изменении CCT и выключенном статусе восстанавливаем уровень
+// Устанавливаем вычисленное значение
+$this->setProperty($targetProperty, $newValue, 'worksUpdated');
+
+// При изменении CCT и выключенном статусе восстанавливаем уровень яркости
 if ($targetProperty === 'cct' && !$status) {
-    $this->setProperty('level', $this->getProperty('levelSaved'), 'worksUpdated');
+    $this->setProperty('level', $this->getProperty('levelSaved') ?? 100, 'worksUpdated');
 }
 
-// Сохраняем текущее значение для восстановления
-if ($targetProperty === 'level' && $newValue > 0) {
-    $this->setProperty('levelSaved', $newValue);
-} elseif ($targetProperty === 'cct') {
-    $this->setProperty('cctSaved', $newValue);
-}

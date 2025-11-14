@@ -1,4 +1,16 @@
 <?php
+/**
+ * Обработка команд для устройств типа SDimmersCct2 (лампы с яркостью и цветовой температурой)
+ * 
+ * @param string $command Команда пользователя
+ * @param string $linked_object Имя объекта в MajorDoMo
+ * @param string $device_title Название устройства
+ * @param string $device_type Тип устройства
+ * @param string $run_code Код, который будет выполнен для команды
+ * @param string $opposite_code Код для противоположного действия
+ * @param int $processed Флаг обработки команды
+ * @param int $reply_confirm Флаг подтверждения действия
+ */
 
 if ($device_type == 'SDimmersCct2') {
 
