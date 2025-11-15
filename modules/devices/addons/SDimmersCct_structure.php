@@ -1,4 +1,32 @@
 <?php
+/**
+ * Class SDimmersCct
+ *
+ * PROPERTIES:
+ *
+ * @property int    $level          Яркость (0–100). OnChange: propertysUpdated. DataKey.
+ * @property int    $levelWork      Рабочая яркость.
+ * @property int    $levelSaved     Сохраненная яркость.
+ * @property int    $cct            Температура (0–100). OnChange: propertysUpdated. DataKey.
+ * @property int    $cctWork        Рабочая теплота.
+ * @property int    $cctSaved       Сохраненная теплота.
+ * @property int    $levelMaxWork   Максимальная рабочая яркость (config).
+ * @property int    $levelMinWork   Минимальная рабочая яркость (config).
+ * @property int    $cctMaxWork     Максимальная рабочая теплота (config).
+ * @property int    $cctMinWork     Минимальная рабочая теплота (config).
+ * 
+ * METHODS:
+ *
+ * @method void setLevel(int $value)   Установить уровень яркости (0–100)
+ * @method void setCct(int $value)     Установить уровень температуры (0–100)
+ * @method void levelUp(int $step)     Увеличить уровень яркости
+ * @method void levelDown(int $step)   Уменьшить уровень яркости
+ * @method void cctUp(int $step)       Увеличить уровень температуры
+ * @method void cctDown(int $step)     Уменьшить уровень температуры
+ * @method void propertysUpdated()     Срабатывает при изменении яркости или температуры
+ * @method void worksUpdated()         Срабатывает при изменении рабочих параметров яркости/температуры
+ * @method void byDefault()        	   Установить свойства по умолчанию
+ */
 
 if (SETTINGS_SITE_LANGUAGE && file_exists(ROOT . 'languages/SDimmersCct_' . SETTINGS_SITE_LANGUAGE . '.php')) {
 	include_once(ROOT . 'languages/SDimmersCct_' . SETTINGS_SITE_LANGUAGE . '.php');
@@ -31,5 +59,6 @@ $this->device_types['dimmerCct'] = array(
 		'cctDown' => array('DESCRIPTION' => 'Уменьшить уровень температуры.', '_CONFIG_SHOW' => 1, '_CONFIG_REQ_VALUE' => 1),
 		'propertysUpdated' => array('DESCRIPTION' => 'Запускается при смене яркости или температуры.'),
 		'worksUpdated' => array('DESCRIPTION' => 'Запускается при смене рабочей яркости или температуры.'),
+		'byDefault' => array('DESCRIPTION' => 'Установить свойства по умолчанию.'),
 	),
 );

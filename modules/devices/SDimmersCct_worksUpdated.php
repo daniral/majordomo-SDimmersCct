@@ -1,12 +1,20 @@
 <?php
-
+/**
+ * Обработчик изменения рабочих свойств (levelWork, cctWork).
+ *
+ * Пересчитывает рабочее значение обратно в диапазон 0–100
+ * и обновляет основное свойство (level или cct).
+ *
+ * @param array $params [
+ *     'SOURCE'    => string, // источник изменения
+ *     'PROPERTY'  => string, // изменённое свойство (levelWork/cctWork)
+ *     'NEW_VALUE' => int,    // новое значение
+ * ]
+ */
 $status   = $this->getProperty('status');
 $source   = strtok($params['SOURCE'] ?? '', ' ');
 $property = $params['PROPERTY'] ?? '';
-
 $workValue = $params['NEW_VALUE'] ?? null;
-if (!is_numeric($workValue)) return;
-$workValue = (int)$workValue;
 
 // Определяем диапазон и целевое свойство
 switch ($property) {
@@ -27,22 +35,18 @@ switch ($property) {
 }
 
 // Проверяем диапазон и источник
-if ($minWork == $maxWork || $source === 'propertysUpdated') return;
+if ($minWork == $maxWork || $source == 'propertysUpdated') return;
 
 // Ограничиваем значение строго в рамках диапазона
-$workValue = max($minWork, min($maxWork, $workValue));
+$workValue = normalizeRange($workValue, $minWork, $maxWork);
+if ($workValue === null) return;
 
-// Пересчитываем 0–100
-$newValue = (int)round(($workValue - $minWork) / ($maxWork - $minWork) * 100);
-$newValue = max(0, min(100, $newValue));
+// Пересчитываем значение в проценты (0–100)
+$newValue = max(0, min(100, (int)round(($workValue - $minWork) / ($maxWork - $minWork) * 100)));
 
 // Обновляем основное свойство, если изменилось
-if ($newValue != $this->getProperty($targetProperty)) {
-    $this->setProperty($targetProperty, $newValue, 'worksUpdated');
-}
+$this->setProperty($targetProperty, $newValue, 'worksUpdated');
+
 if ($targetProperty == 'cct' && !$status){
-	$this->setProperty('level', $this->getProperty('levelSaved'), 'worksUpdated');
+	$this->setProperty('level', $this->getProperty('levelSaved') ?? 100, 'worksUpdated');
 }
-// Сохраняем последнее значение
-if($newValue>0)
-	$this->setProperty($targetProperty . 'Saved', $newValue);
