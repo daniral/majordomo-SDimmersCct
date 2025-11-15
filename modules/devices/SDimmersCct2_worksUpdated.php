@@ -15,10 +15,7 @@
 $status   = $this->getProperty('status');
 $source   = strtok($params['SOURCE'] ?? '', ' ');
 $property = $params['PROPERTY'] ?? '';
-
 $workValue = $params['NEW_VALUE'] ?? null;
-if (!is_numeric($workValue)) return;
-$workValue = (int)$workValue;
 
 // Определяем диапазон и целевое свойство
 switch ($property) {
@@ -39,10 +36,11 @@ switch ($property) {
 }
 
 // Проверяем диапазон и источник
-if ($minWork == $maxWork || $source === 'propertysUpdated') return;
+if ($minWork == $maxWork || $source == 'propertysUpdated') return;
 
 // Ограничиваем значение строго в рамках диапазона
-$workValue = max($minWork, min($maxWork, $workValue));
+$workValue = normalizeRange($workValue, $minWork, $maxWork);
+if ($workValue === null) return;
 
 // Пересчитываем значение в проценты (0–100)
 $newValue = max(0, min(100, (int)round(($workValue - $minWork) / ($maxWork - $minWork) * 100)));

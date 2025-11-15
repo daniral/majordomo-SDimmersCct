@@ -26,17 +26,24 @@ $source   = strtok($params['SOURCE'], ' ');
 $property = $params['PROPERTY'];
 $value = strtolower(trim($params['NEW_VALUE'] ?? null));
 
+if ($source === 'worksUpdated') return;
+
 switch ($property) {
     case 'level':
         $minWork = $this->getProperty('levelMinWork');
         $maxWork = $this->getProperty('levelMaxWork');
-        $targetProperty = 'level';
+		if ($value <= 0) {
+			$this->callMethod('turnOff');
+			return;
+		}
+		if(!$status && $value > 0){
+			$this->setProperty('status', 1);
+		}
         break;
 
     case 'cct':
 		$minWork = $this->getProperty('cctMinWork');
         $maxWork = $this->getProperty('cctMaxWork');
-        $targetProperty = 'cct';
 		
 		$presets = [
 			'coolest' => 0,
@@ -61,37 +68,27 @@ switch ($property) {
 }
 
 // Проверяем диапазон и источник
-if ($minWork == $maxWork || $source === 'worksUpdated') return;
+if ($minWork == $maxWork) return;
 
 $value = normalizeRange($value ?? null);
 if ($value === null) return;
 
 //Сохраняем, если значение действительно изменилось
-if ($value != ($params['OLD_VALUE'] ?? 0) && $value != $this->getProperty($targetProperty)) 
-   $this->setProperty($targetProperty, $value, 'worksUpdated');
+if ($value != ($params['OLD_VALUE'] ?? 0) && $value != $this->getProperty($property)) 
+   $this->setProperty($property, $value, 'worksUpdated');
 
 // Вычисляем рабочее значение в рамках диапазона
 $workValue = round($minWork + ($maxWork - $minWork) * $value / 100);
 
 // Устанавливаем вычисленное рабочее значение
-$this->setProperty($targetProperty . 'Work', $workValue, 'propertysUpdated');
+$this->setProperty($property . 'Work', $workValue, 'propertysUpdated');
 
-if ($source !== 'autoMode' && !$this->getProperty('flag'))
+if ($source !== 'autoMode'){
 	$this->setProperty('flag', 1);
-
-if($this->getProperty('flag')){
-	if ($targetProperty=='level' && $value > 0){
+	if ($property=='level' && $value > 0){
 		$this->setProperty('levelSaved', $value);
-	}elseif ($targetProperty=='level' && $value <= 0) {
-		$this->callMethod('turnOff');
-		return;
 	}
-	if ($targetProperty=='cct') {
+	if ($property=='cct') {
 		$this->setProperty('cctSaved', $value);
-		if (!$status) 
-			$this->setProperty('level', $this->getProperty('levelSaved') ?? 100);
 	}
 }
-
-if(!$this->getProperty('status'))
-		$this->setProperty('status', 1);
