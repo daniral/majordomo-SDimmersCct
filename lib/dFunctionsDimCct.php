@@ -1,5 +1,5 @@
 <?php
-/**
+/** PHPDoc
  * normalizeRange($val, $min, $max) — Проверяет и нормализует значение (число или HEX) в заданный диапазон.
  * initDefaults($object, $defaults) — Инициализирует свойства объекта по умолчанию.
  * adjustProperty($obj, $property, $value, $direction, $defaultStep, $min, $max) — Универсальное изменение свойства (увеличить/уменьшить).
@@ -12,6 +12,7 @@
  *| `adjustProperty`   | Универсальное изменение свойства (яркость/температура)  |
  *| `createObjectMenu` | Создает меню управления объектом рекурсивно             |
 */
+//
 
 /** Проверяет и нормализует значение: числовое или HEX (цвет/яркость).
  * normalizeRange($val, $min, $max) 
