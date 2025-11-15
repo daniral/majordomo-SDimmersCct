@@ -1,5 +1,61 @@
 <?php
 
+/**
+ * Class SDimmersCct2
+ *
+ * Устройство: Освещение2 (Яркость, Температура)
+ * 
+ * PROPERTIES:
+ * 
+ * @property int    $level            Яркость (0–100)
+ * @property int    $levelWork        Рабочая яркость
+ * @property int    $levelSaved       Сохраненная яркость (0–100)
+ * @property int    $levelMaxWork     Максимальная рабочая яркость
+ * @property int    $levelMinWork     Минимальная рабочая яркость
+ * @property int    $cct              Уровень температуры (0–100)
+ * @property int    $cctWork          Рабочая теплота
+ * @property int    $cctSaved         Сохраненная теплота (0–100)
+ * @property int    $cctMaxWork       Максимальная рабочая теплота
+ * @property int    $cctMinWork       Минимальная рабочая теплота
+ * @property int    $dayLevel         Уровень яркости днем (0–100)
+ * @property int    $nightLevel       Уровень яркости ночью (0–100)
+ * @property int    $dayCct           Уровень температуры днем (0–100)
+ * @property int    $nightCct         Уровень температуры ночью (0–100)
+ * @property int    $autoOnOff        Автовключение (1 – включено, 0 – отключено)
+ * @property int    $timerOff         Выключить через (сек). 0 – не выключать
+ * @property int    $workingDay       Когда работать: 1 – днем, 2 – ночью, 3 – круглосуточно
+ * @property int    $workingBy        Режим работы: 1 – по времени, 2 – по солнцу, 3 – по датчику
+ * @property string $dayBegin         Начало режима день (hh:mm)
+ * @property string $nightBegin       Начало режима ночь (hh:mm)
+ * @property string $sunriseTime      Время восхода
+ * @property string $sunsetTime       Время заката
+ * @property int    $signSunrise      Коррекция восхода (1 – прибавить, 0 – отнять)
+ * @property string $addTimeSunrise   Смещение времени восхода (HH:MM)
+ * @property int    $signSunset       Коррекция заката (1 – прибавить, 0 – отнять)
+ * @property string $addTimeSunset    Смещение времени заката (HH:MM)
+ * @property int    $illuminanceMax   Максимальное освещение (для датчика)
+ * @property int    $illuminanceFlag  Стопер датчика освещения
+ * @property int    $illuminance      Текущее освещение (датчик)
+ * @property int    $presence         Данные датчика присутствия
+ * @property int    $flag             Стопер
+ * 
+ * METHODS:
+ *
+ * @method void turnOn()              Включить устройство
+ * @method void turnOff()             Выключить устройство
+ * @method void switch()              Переключить состояние (вкл/выкл)
+ * @method void setLevel(int $value)  Установить уровень яркости (0–100)
+ * @method void setCct(int $value)    Установить уровень температуры (0–100)
+ * @method void levelUp(int $value)   Увеличить уровень яркости
+ * @method void levelDown(int $value) Уменьшить уровень яркости
+ * @method void cctUp(int $value)     Увеличить уровень температуры
+ * @method void cctDown(int $value)   Уменьшить уровень температуры
+ * @method void propertysUpdated()    Запускается при смене яркости, теплоты, присутствия
+ * @method void worksUpdated()        Запускается при смене рабочей яркости и цвета
+ * @method void byDefault()           Установить свойства по умолчанию
+ * @method void commandsMenu()        Создает меню управления
+ */
+
 if (SETTINGS_SITE_LANGUAGE && file_exists(ROOT . 'languages/SDimmersCct2_' . SETTINGS_SITE_LANGUAGE . '.php')) {
 	include_once(ROOT . 'languages/SDimmersCct2_' . SETTINGS_SITE_LANGUAGE . '.php');
 } else {

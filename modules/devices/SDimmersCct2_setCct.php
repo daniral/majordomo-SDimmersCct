@@ -10,7 +10,8 @@
  *   - 'warm'
  *   - 'warmest'
  *
- *  array("value"=>0 <--> 100 %);
+ *     callMethod('имя объекта.setCct', array("value"=>0--100));
+ *     callMethod('имя объекта.setCct', array("value"=>'coolest'));
  * 
  * @param array{
  *     value: int|string|null   // Цветовая температура 0–100% или строковый пресет

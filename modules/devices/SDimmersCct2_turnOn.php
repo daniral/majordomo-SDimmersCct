@@ -96,8 +96,9 @@
       - callMethod('имя объекта.turnOn', array('level'=> 1<-->100));  
       - callMethod('имя объекта.turnOn', array('cct'=> 0<-->100));  
       - Вместо процентов можно вызвать пресеты:''coolest','cool','warm','warmest'.   
+        - callMethod('имя объекта.setCct', array("value"=>'coolest'));  
   - Включить авто режим - callMethod('имя объекта.turnOn', array('autoMode'=>1));   
-    - С параметрами:
+    - С параметрами:  
       - callMethod('имя объекта.turnOn', array('autoMode'=>1, 'level'=> 1<-->100, 'cct'=> 0<-->100));  
       - callMethod('имя объекта.turnOn', array('autoMode'=>1, 'level'=> 1<-->100));  
       - callMethod('имя объекта.turnOn', array('autoMode'=>1, 'cct'=> 0<-->100));  
