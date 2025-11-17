@@ -96,7 +96,7 @@ if (!function_exists('autoOff')) {
 if (!function_exists('initDefaults')) {
 	function initDefaults($object, $defaults) {
 		foreach($defaults as $prop=>$val) {
-			if($object->getProperty($prop)==='') $object->setProperty($prop,$val);
+			if($object->getProperty($prop)=='') $object->setProperty($prop,$val);
 		}
 	}
 }
@@ -218,11 +218,11 @@ if (!function_exists('createObjectMenu')) {
 			$Record['LINKED_OBJECT'] = $item[1] ?: $objectName;
 			$Record['LINKED_PROPERTY'] = $item[2] ?? '';
 			$Record['TYPE'] = $item[3] ?? '';
-			$Record['CUR_VALUE'] = $item[4] ?? 0;
-			$Record['MIN_VALUE'] = $item[5] ?? 0;
-			$Record['MAX_VALUE'] = $item[6] ?? 0;
-			$Record['STEP_VALUE'] = $item[7] ?? 0;
-			$Record['READ_ONLY'] = $item[8] ?? 0;
+			$Record['CUR_VALUE'] = $item[4] ?? '';
+			$Record['MIN_VALUE'] = (float)$item[5] ?? 0;
+			$Record['MAX_VALUE'] = (float)$item[6] ?? 0;
+			$Record['STEP_VALUE'] = (float)$item[7] ?? '';
+			$Record['READ_ONLY'] = (int)$item[8] ?? 0;
 			$Record['CODE'] = $item[9] ?? NULL;
 			$Record['DATA'] = $item[10] ?? NULL;
 			$Record['PRIORITY'] = $item[11] ?? 10;
