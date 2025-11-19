@@ -71,7 +71,7 @@ $menuItems = [
                 ['Минимальная', $objectName, 'cctMinWork', 'sliderbox', '153', 1, 1000, 1, '', '', '', 10],
             ]],
         ]],
-    ],'lightLamp.png']
+    ],'SDimmersCctLightLamp.png']
 ];
 
 createObjectMenu($objectName, $menuItems);
