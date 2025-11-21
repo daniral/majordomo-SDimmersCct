@@ -1,102 +1,123 @@
 <script type="text/javascript">
-/**
- * ============================================================
- * Управление лампой с яркостью и цветовой температурой (CCT)
- * ============================================================
- *
- * Глобальный объект:
- *   window.dimmer%.object_id% - состояние лампы
- *     - level: яркость (0-100)
- *     - cct: цветовая температура (0-100)
- *     - dragging: флаг перетаскивания слайдера
- *
- * Функции:
- *   previewBrightness%.object_id%(val) - обновляет яркость при движении ползунка
- *   sendNewBrightness%.object_id%()    - отправляет новое значение яркости на сервер
- *   previewCct%.object_id%(val)        - обновляет CCT при движении ползунка
- *   sendNewCct%.object_id%()           - отправляет новое значение CCT на сервер
- *   updateSliderFill(selector, value, color) - визуально обновляет фон ползунка
- *   updateFromServer(level, cct)       - синхронизирует значения с сервера
- *
- * HTML-структура:
- *   - div.card - контейнер с ползунками
- *   - p#dimmer%.object_id%_bright - текст яркости
- *   - input#dimmerSelect%.object_id%_bright - слайдер яркости
- *   - p#dimmer%.object_id%_cct - текст CCT
- *   - input#dimmerSelect%.object_id%_cct - слайдер CCT
- *
- * Используется debounce 200ms для отправки изменений.
- * Ползунки обновляются с учетом пользовательского взаимодействия.
- */
 
-// Проверяем, существует ли объект dimmer для этой лампы
-if (typeof window.dimmer === 'undefined') window.dimmer = {};
-if (typeof window.dimmer%.object_id% === 'undefined') window.dimmer%.object_id% = {
-  level: %.level%,
-  cct: %.cct%,
-  dragging: false
-};
+	/**
+	 * ============================================================
+	 * Dimmer Widget для MajorDoMo
+	 * ============================================================
+	 *
+	 * Описание:
+	 * Скрипт управляет яркостью и цветовой температурой (CCT) лампы.
+	 * Использует глобальный объект window.dimmer для хранения состояния каждой лампы.
+	 *
+	 * Плейсхолдеры, заменяемые сервером:
+	 * %.object_id%          - уникальный ID лампы
+	 * %.object_title%       - название объекта в MajorDoMo
+	 * %.level%              - яркость (0-100)
+	 * %.cct%                - цветовая температура (0-100)
+	 * %.loadType%           - тип загрузки виджета
+	 * %.status%             - статус лампы (on/off)
+	 * %.icon%               - иконка устройства
+	 * %.object_description% - описание устройства
+	 *
+	 * ============================================================
+	 * Глобальный объект лампы:
+	 * window.dimmer[object_id] = {
+	 *   level: number,           // яркость белого света (0-100)
+	 *   cct: number,             // цветовая температура (0-100)
+	 *   dragging: boolean,       // флаг перетаскивания
+	 *   brightnessTimeout: number|null, // таймер debounce яркости
+	 *   cctTimeout: number|null         // таймер debounce CCT
+	 * }
+	 *
+	 * ============================================================
+	 * Функции:
+	 *
+	 * previewBrightness%.object_id%(val)
+	 *   - Предварительный просмотр изменения яркости белого света.
+	 *   - @param {number|string} val - значение яркости (0-100)
+	 *
+	 * sendNewBrightness%.object_id%()
+	 *   - Отправка нового значения яркости на сервер (debounce 500ms)
+	 *
+	 * previewCct%.object_id%(val)
+	 *   - Предварительный просмотр изменения цветовой температуры.
+	 *   - @param {number|string} val - значение CCT (0-100)
+	 *
+	 * sendNewCct%.object_id%()
+	 *   - Отправка нового значения CCT на сервер (debounce 500ms)
+	 *
+	 * updateSliderFill(selector, value, color)
+	 *   - Обновляет фон слайдера в зависимости от значения.
+	 *   - @param {string} selector - CSS-селектор input[type=range]
+	 *   - @param {number} value - значение ползунка (0-100)
+	 *   - @param {string} color - цвет до текущего значения
+	 *
+	 */
+	 
+	// Создаем глобальный объект dimmer, если его нет
+	if (typeof window.dimmer === 'undefined') window.dimmer = {};
 
-// --- Debounce функции ---
-let brightnessTimeout%.object_id%;
-let cctTimeout%.object_id%;
+	// Создаем объект для этой лампы, если его нет
+	if (typeof window.dimmer%.object_id% === 'undefined') {
+		window.dimmer%.object_id% = {
+			level: %.level%,
+			cct: %.cct%,
+			dragging: false,
+			brightnessTimeout: null,
+			cctTimeout: null
+		};
+	}
 
-// --- Яркость ---
-function previewBrightness%.object_id%(val) {
-  val = parseInt(val);
-  window.dimmer%.object_id%.dragging = true; // Пользователь тянет
-  window.dimmer%.object_id%.level = val;
-  $('#dimmer%.object_id%_bright').text("Яркость: " + val + "%");
-  updateSliderFill('#dimmerSelect%.object_id%_bright', val, '#4CAF50');
-}
+	// --- Яркость ---
+	function previewBrightness%.object_id%(val) {
+		val = parseInt(val);
+		let lamp = window.dimmer%.object_id%;
+		lamp.dragging = true;
+		lamp.level = val;
+		$('#dimmer%.object_id%_bright').text("Яркость: " + val + "%");
+		updateSliderFill('#dimmerSelect%.object_id%_bright', val, '#4CAF50');
+	}
 
-function sendNewBrightness%.object_id%() {
-  window.dimmer%.object_id%.dragging = false; // Отпустил
-  clearTimeout(brightnessTimeout%.object_id%);
-  brightnessTimeout%.object_id% = setTimeout(() => {
-      callMethod('%.object_title%.setLevel', 'value=' + window.dimmer%.object_id%.level);
-  }, 500); // debounce 200ms
-}
+	function sendNewBrightness%.object_id%() {
+		let lamp = window.dimmer%.object_id%;
+		lamp.dragging = false;
+		clearTimeout(lamp.brightnessTimeout);
+		lamp.brightnessTimeout = setTimeout(() => {
+			callMethod('%.object_title%.setLevel', 'value=' + lamp.level);
+		}, 500);
+	}
 
-// --- Цветовая температура ---
-function previewCct%.object_id%(val) {
-  val = parseInt(val);
-  window.dimmer%.object_id%.dragging = true;
-  window.dimmer%.object_id%.cct = val;
-  $('#dimmer%.object_id%_cct').text("Температура: " + val + "%");
-  updateSliderFill('#dimmerSelect%.object_id%_cct', val, '#f7a800');
-}
+	// --- Цветовая температура ---
+	function previewCct%.object_id%(val) {
+		val = parseInt(val);
+		let lamp = window.dimmer%.object_id%;
+		lamp.dragging = true;
+		lamp.cct = val;
+		$('#dimmer%.object_id%_cct').text("Температура: " + val + "%");
+		updateSliderFill('#dimmerSelect%.object_id%_cct', val, '#f7a800');
+	}
 
-function sendNewCct%.object_id%() {
-  window.dimmer%.object_id%.dragging = false;
-  clearTimeout(cctTimeout%.object_id%);
-  cctTimeout%.object_id% = setTimeout(() => {
-      callMethod('%.object_title%.setCct', 'value=' + window.dimmer%.object_id%.cct);
-  }, 500); // debounce 200ms
-}
+	function sendNewCct%.object_id%() {
+		let lamp = window.dimmer%.object_id%;
+		lamp.dragging = false;
+		clearTimeout(lamp.cctTimeout);
+		lamp.cctTimeout = setTimeout(() => {
+			callMethod('%.object_title%.setCct', 'value=' + lamp.cct);
+		}, 500);
+	}
 
-// --- Обновление фона ползунка ---
-function updateSliderFill(selector, value, color) {
-  const slider = document.querySelector(selector);
-  const percentage = value;
-  slider.style.background = `linear-gradient(90deg, ${color} ${percentage}%, #ddd ${percentage}%)`;
-}
+	// --- Обновление фона слайдера ---
+	function updateSliderFill(selector, value, color) {
+		const slider = document.querySelector(selector);
+		if (!slider) return;
+		slider.style.background = `linear-gradient(90deg, ${color} ${value}%, #ddd ${value}%)`;
+	}
 
-// --- Обновление слайдера с сервера ---
-function updateFromServer(level, cct) {
-  if (!window.dimmer%.object_id%.dragging) { 
-      window.dimmer%.object_id%.level = level;
-      window.dimmer%.object_id%.cct = cct;
-
-      $('#dimmer%.object_id%_bright').text("Яркость: " + level + "%");
-      $('#dimmerSelect%.object_id%_bright').val(level);
-      updateSliderFill('#dimmerSelect%.object_id%_bright', level, '#4CAF50');
-
-      $('#dimmer%.object_id%_cct').text("Температура: " + cct + "%");
-      $('#dimmerSelect%.object_id%_cct').val(cct);
-      updateSliderFill('#dimmerSelect%.object_id%_cct', cct, '#f7a800');
-  }
-}
+	// Инициализация фона ползунков при загрузке
+	$(document).ready(function() {
+		updateSliderFill('#dimmerSelect%.object_id%_bright', %.level%, '#4CAF50');
+		updateSliderFill('#dimmerSelect%.object_id%_cct', %.cct%, '#f7a800');
+	});
 </script>
 
 <style>
