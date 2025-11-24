@@ -39,10 +39,10 @@ $this->device_types['dimmerCct'] = array(
 	'PARENT_CLASS' => 'SControllers',
 	'CLASS' => 'SDimmersCct',
 	'PROPERTIES' => array(
-		'level' => array('DESCRIPTION' => 'Яркость (0-100)', 'ONCHANGE' => 'propertysUpdated', 'DATA_KEY' => 1,'VALIDATION_TYPE' => 1, 'VALIDATION_NUM_MIN' => 0, 'VALIDATION_NUM_MAX' => 100),
+		'level' => array('DESCRIPTION' => 'Яркость (1-100)', 'ONCHANGE' => 'propertysUpdated', 'DATA_KEY' => 1),
 		'levelWork' => array('DESCRIPTION' => 'Рабочая яркость.', 'ONCHANGE' => 'worksUpdated'),
 		'levelSaved' => array('DESCRIPTION' => 'Сохраненная яркость.'),
-		'cct' => array('DESCRIPTION' => 'Температура (0-100)', 'ONCHANGE' => 'propertysUpdated', 'DATA_KEY' => 1,'VALIDATION_TYPE' => 1, 'VALIDATION_NUM_MIN' => 0, 'VALIDATION_NUM_MAX' => 100),
+		'cct' => array('DESCRIPTION' => 'Температура (1-100)', 'ONCHANGE' => 'propertysUpdated', 'DATA_KEY' => 1),
 		'cctWork' => array('DESCRIPTION' => 'Рабочая теплота.', 'ONCHANGE' => 'worksUpdated'),
 		'cctSaved' => array('DESCRIPTION' => 'Сохраненная теплота.'),
 		'levelMaxWork' => array('DESCRIPTION' => 'Максимальная рабочая яркость', '_CONFIG_TYPE' => 'num'),

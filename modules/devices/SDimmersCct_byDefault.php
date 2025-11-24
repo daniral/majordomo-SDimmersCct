@@ -14,7 +14,7 @@
  */
 $defaults = [
 	'level' => '50', 'cct' => '50',
-    'levelMinWork' => '0', 'levelMaxWork' => '254',
+    'levelMinWork' => '1', 'levelMaxWork' => '254',
     'cctMinWork' => '153', 'cctMaxWork' => '370',
 ];
 initDefaults($this, $defaults);

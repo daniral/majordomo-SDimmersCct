@@ -33,6 +33,15 @@ switch ($property) {
         break;
 
     case 'cct':
+        $presets = [
+			'coolest' => 1,
+			'cool'    => 33,
+			'warm'    => 66,
+			'warmest' => 100,
+		];
+        if (isset($presets[$value])) {
+            $value = $presets[$value];
+        }
         $minWork = $this->getProperty('cctMinWork');
         $maxWork = $this->getProperty('cctMaxWork');
         break;
@@ -44,25 +53,17 @@ switch ($property) {
 // Проверяем диапазон и источник
 if ($minWork == $maxWork || $source === 'worksUpdated') return;
 
-$value = normalizeRange($value ?? null);
+$value = normalizeRange($value ?? null,1);
 if ($value === null) return;
 
 // Сохраняем, если значение вышло за пределы или отличается от текущего
 if ($value != ($params['OLD_VALUE'] ?? 0) && $value != $this->getProperty($property))
         $this->setProperty($property, $value, 'worksUpdated');
+
+$this->setProperty($property . 'Saved', $value);
 	
-if ($property=='level' && $value > 0){
-	$this->setProperty('status', 1);
-	$this->setProperty('levelSaved', $value);
-}elseif ($property=='level' && $value <= 0) {
-	$this->callMethod('turnOff');
-	return;
-}
-if ($property=='cct') {
-	$this->setProperty('cctSaved', $value);
-	if (!$status) {
-		$this->setProperty('level', $this->getProperty('levelSaved') ?? 100, 'propertysUpdated');
-	}
+if ($property=='cct' && !$status) {
+	$this->setProperty('level', $this->getProperty('levelSaved') ?? 100, 'propertysUpdated');
 }
 
 // Вычисляем рабочее значение в рамках диапазона
@@ -70,3 +71,5 @@ $workValue = round($minWork + ($maxWork - $minWork) * $value / 100);
 
 // Устанавливаем рабочее значение
 $this->setProperty($property . 'Work', $workValue, 'propertysUpdated');
+
+if(!$status) $this->setProperty('status', 1);

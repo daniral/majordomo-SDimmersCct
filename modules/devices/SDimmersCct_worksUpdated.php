@@ -2,7 +2,7 @@
 /**
  * Обработчик изменения рабочих свойств (levelWork, cctWork).
  *
- * Пересчитывает рабочее значение обратно в диапазон 0–100
+ * Пересчитывает рабочее значение обратно в диапазон 1–100
  * и обновляет основное свойство (level или cct).
  *
  * @param array $params [
@@ -11,9 +11,9 @@
  *     'NEW_VALUE' => int,    // новое значение
  * ]
  */
-$status   = $this->getProperty('status');
-$source   = strtok($params['SOURCE'] ?? '', ' ');
-$property = $params['PROPERTY'] ?? '';
+$status    = $this->getProperty('status');
+$source    = strtok($params['SOURCE'] ?? '', ' ');
+$property  = $params['PROPERTY'] ?? '';
 $workValue = $params['NEW_VALUE'] ?? null;
 
 // Определяем диапазон и целевое свойство
@@ -41,8 +41,8 @@ if ($minWork == $maxWork || $source == 'propertysUpdated') return;
 $workValue = normalizeRange($workValue, $minWork, $maxWork);
 if ($workValue === null) return;
 
-// Пересчитываем значение в проценты (0–100)
-$newValue = max(0, min(100, (int)round(($workValue - $minWork) / ($maxWork - $minWork) * 100)));
+// Пересчитываем значение в проценты (1–100)
+$newValue = max(1, min(100, (int)round(($workValue - $minWork) / ($maxWork - $minWork) * 100)));
 
 // Обновляем основное свойство, если изменилось
 $this->setProperty($targetProperty, $newValue, 'worksUpdated');
