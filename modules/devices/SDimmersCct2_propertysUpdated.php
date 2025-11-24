@@ -74,9 +74,13 @@ $workValue = round($minWork + ($maxWork - $minWork) * $value / 100);
 // Устанавливаем вычисленное рабочее значение
 $this->setProperty($property . 'Work', $workValue, 'propertysUpdated');
 
-if(!$status) $this->setProperty('status', 1);
+if ($property=='cct' && !$status) {
+	$this->setProperty('level', $this->getProperty('levelSaved') ?? 100, 'propertysUpdated');
+}
 
 if ($source !== 'autoMode'){
 	$this->setProperty('flag', 1);
 	$this->setProperty($property . 'Saved', $value);
 }
+
+if(!$status) $this->setProperty('status', 1);
