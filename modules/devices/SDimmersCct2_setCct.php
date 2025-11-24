@@ -1,7 +1,7 @@
 <?php
 
 /**
- * Устанавливает цветовую температуру лампы.
+ * Устанавливает температуру белого цвета лампы.
  *   
  * Принимает массив параметров с ключом 'value', где указана температура в процентах
  * или один из строковых пресетов:
@@ -10,15 +10,18 @@
  *   - 'warm'
  *   - 'warmest'
  *
- *     callMethod('имя объекта.setCct', array("value"=>0--100));
- *     callMethod('имя объекта.setCct', array("value"=>'coolest'));
+ *  callMethod('имя объекта.setCct', array("value"=>1--100));
+ *  callMethod('имя объекта.setCct', array("value"=>'coolest'));
  * 
- * @param array{
- *     value: int|string|null   // Цветовая температура 0–100% или строковый пресет
- * } $params Ассоциативный массив параметров.
+ * @param array $params Ассоциативный массив параметров,
+ *                      содержащий ключи:
+ *                      - 'cct' (string) — число или пресет;
+ *                      - 'value' (string) — альтернативное имя параметра.
  *
  * @return void
  */
-if (!isset($params['value'])) return;
 
-$this->setProperty('cct', $params['value'] ?? null, 'setLevelCct');
+$cct = $params['cct'] ?? $params['value'] ?? null;
+if ($cct === null) return;
+
+$this->setProperty('cct', $cct, 'setLevelCct');

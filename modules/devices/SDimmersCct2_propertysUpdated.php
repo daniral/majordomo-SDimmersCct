@@ -26,19 +26,10 @@ $source   = strtok($params['SOURCE'], ' ');
 $property = $params['PROPERTY'];
 $value = strtolower(trim($params['NEW_VALUE'] ?? null));
 
-if ($source === 'worksUpdated') return;
-
 switch ($property) {
     case 'level':
         $minWork = $this->getProperty('levelMinWork');
         $maxWork = $this->getProperty('levelMaxWork');
-		if ($value <= 0) {
-			$this->callMethod('turnOff');
-			return;
-		}
-		if(!$status && $value > 0){
-			$this->setProperty('status', 1);
-		}
         break;
 
     case 'cct':
@@ -68,9 +59,9 @@ switch ($property) {
 }
 
 // Проверяем диапазон и источник
-if ($minWork == $maxWork) return;
+if ($minWork == $maxWork || $source === 'worksUpdated') return;
 
-$value = normalizeRange($value ?? null);
+$value = normalizeRange($value ?? null,1);
 if ($value === null) return;
 
 //Сохраняем, если значение действительно изменилось
@@ -83,12 +74,9 @@ $workValue = round($minWork + ($maxWork - $minWork) * $value / 100);
 // Устанавливаем вычисленное рабочее значение
 $this->setProperty($property . 'Work', $workValue, 'propertysUpdated');
 
+if(!$status) $this->setProperty('status', 1);
+
 if ($source !== 'autoMode'){
 	$this->setProperty('flag', 1);
-	if ($property=='level' && $value > 0){
-		$this->setProperty('levelSaved', $value);
-	}
-	if ($property=='cct') {
-		$this->setProperty('cctSaved', $value);
-	}
+	$this->setProperty($property . 'Saved', $value);
 }

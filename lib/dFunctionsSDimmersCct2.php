@@ -4,23 +4,34 @@
  * dimmerTime($time, $addTime, $sign) — Вычисляет новое время с поправкой (добавить/вычесть HH:MM).
  * autoOff($object, $timer, $flag, $presence) — Запускает таймер автоотключения лампы.
  * initDefaults($object, $defaults) — Инициализирует свойства объекта по умолчанию.
- * getAutoLevelCct($object, $level, $cct) — Получает текущие значения яркости и CCT для авто режима.
- * adjustProperty($obj, $property, $value, $direction, $defaultStep, $min, $max) — Универсальное изменение свойства (увеличить/уменьшить).
- * createObjectMenu($objectName, $menuItems, $parentId, $insertID, $depth) — Создает меню управления объектом рекурсивно.
- * 
- *--------------------------------------------------------------------------------
- *| Функция            | Назначение                                              |
- *| ------------------ | ------------------------------------------------------- |
- *| `normalizeRange`   | Нормализует число или HEX в диапазон                    |
- *| `dimmerTime`       | Корректирует время с учётом смещения                    |
- *| `autoOff`          | Таймер автоотключения лампы                             |
- *| `initDefaults`     | Устанавливает свойства объекта по умолчанию             |
- *| `getAutoLevelCct`  | Получает текущие значения яркости и CCT для авто режима |
- *| `adjustProperty`   | Универсальное изменение свойства (яркость/температура)  |
- *| `createObjectMenu` | Создает меню управления объектом рекурсивно             |
- *--------------------------------------------------------------------------------
+ *
+ * getAutoLevelCct($object, $level, $cct, $color, $colorLevel, $sceneName)
+ * — Получает текущие значения яркости, CCT, цвета, уровня цвета и сцены для авто режима.
+ *
+ * adjustProperty($obj, $property, $value, $direction, $defaultStep, $min, $max)
+ * — Универсальное изменение свойства (увеличить/уменьшить).
+ *
+ * createCommandsMenu($objectName, $menuItems, $parentId, $insertID, $depth)
+ * — Создает меню управления объектом рекурсивно.
+ *
+ * deleteCommandsMenu($objectName)
+ * — Удаляет меню управления объектом.
+ *
+ *--------------------------------------------------------------------------------------------
+ *| Функция             | Назначение                                                         |
+ *| ------------------- | -------------------------------------------------------------------|
+ *| `normalizeRange`    | Нормализует число или HEX в диапазон                               |
+ *| `dimmerTime`        | Корректирует время с учётом смещения                               |
+ *| `autoOff`           | Таймер автоотключения лампы                                        |
+ *| `initDefaults`      | Устанавливает свойства объекта по умолчанию                        |
+ *| `getAutoLevelCct`   | Возвращает яркость, CCT, цвет, уровень цвета и сцену авто режима   |
+ *| `adjustProperty`    | Универсальное изменение свойства лампы                             |
+ *| `createCommandsMenu'| Рекурсивное создание меню управления объектом                      |
+ *| `deleteCommandsMenu`| Удаление меню управления объектом                                  |
+ *--------------------------------------------------------------------------------------------
  */
 //
+
 
 /** Проверяет и нормализует значение: числовое или HEX (цвет/яркость).
  * normalizeRange($val, $min, $max) 
@@ -101,15 +112,24 @@ if (!function_exists('initDefaults')) {
 	}
 }
 
-/** Получает актуальные значения яркости и CCT для авто режима
- * getAutoLevelCct($object, $level, $cct)
- * @param object $object Объект лампы
- * @param int|null $level Значение яркости, если задано
- * @param int|null $cct Значение CCT, если задано
- * @return array ['level'=>int, 'cct'=>int]
+/** Получает актуальные значения яркости, CCT, цвета и сцены для авто-режима лампы.
+ * @param object      $object      Объект лампы (MajorDoMo object)
+ * @param int|null    $level       Принудительное значение яркости (если указано)
+ * @param int|null    $cct         Принудительное значение CCT (если указано)
+ * @param string|null $color      Принудительное значение цвета (hex или raw Tuya)
+ * @param int|null    $colorLevel  Принудительный уровень яркости цветного света
+ * @param string|null $sceneName  Принудительное имя сцены
+ *
+ * @return array{
+ *     level:int|null,
+ *     cct:int|null,
+ *     color:string|null,
+ *     colorLevel:int|null,
+ *     sceneName:string|null
+ * }
  */
 if (!function_exists('getAutoLevelCct')) {
-	function getAutoLevelCct($object, $level=null, $cct=null) {
+	function getAutoLevelCct($object, $level=null, $cct=null, $color=null, $colorLevel=null, $sceneName=null) {
 		$dayBegin=$object->getProperty('dayBegin');
 		$nightBegin=$object->getProperty('nightBegin');
 
@@ -119,24 +139,39 @@ if (!function_exists('getAutoLevelCct')) {
 			$nightBegin=dimmerTime($object->getProperty('sunsetTime'),$object->getProperty('addTimeSunset'),$object->getProperty('signSunset'));
 		}
 
+		$currentColor = null;
+		$currentColorLevel = null;
 		$currentLevel = null;
 		$currentCct = null;
+		$currentSceneName = null;
+		$currentMode = null;
 
 		if($object->getProperty('workingBy')!=3) {
 			if(($object->getProperty('workingDay')==2 || $object->getProperty('workingDay')==3) && timeBetween($nightBegin,$dayBegin)) {
-				$currentLevel=$level ?? $object->getProperty('nightLevel');
-				$currentCct=$cct ?? $object->getProperty('nightCct');
+				$currentColor = $color ?? $object->getProperty('nightColor');
+				$currentColorLevel = $colorLevel ?? $object->getProperty('nightColorLevel');
+				$currentLevel = $level ?? $object->getProperty('nightLevel');
+				$currentCct = $cct ?? $object->getProperty('nightCct');
+				$currentSceneName = $sceneName ?? $object->getProperty('nightScene');
+				$currentMode = $object->getProperty('nightMode') ?? '2';
 			} elseif(($object->getProperty('workingDay')==1 || $object->getProperty('workingDay')==3) && timeBetween($dayBegin,$nightBegin)) {
+				$currentColor = $color ?? $object->getProperty('dayColor');
+				$currentColorLevel = $colorLevel ?? $object->getProperty('dayColorLevel');
 				$currentLevel=$level ?? $object->getProperty('dayLevel');
 				$currentCct=$cct ?? $object->getProperty('dayCct');
+				$currentSceneName = $sceneName ?? $object->getProperty('dayScene');
+				$currentMode = $object->getProperty('dayMode') ?? '2';
 			}
 		} elseif($object->getProperty('workingBy')==3 && $object->getProperty('illuminance')<=$object->getProperty('illuminanceMax')) {
+			$currentColor = $color ?? $object->getProperty('nightColor');
+			$currentColorLevel = $colorLevel ?? $object->getProperty('nightColorLevel');
 			$currentLevel=$level ?? $object->getProperty('nightLevel');
 			$currentCct=$cct ?? $object->getProperty('nightCct');
+			$currentSceneName = $sceneName ?? $object->getProperty('nightScene');
+			$currentMode = $object->getProperty('nightMode') ?? '2';
 			$object->setProperty('illuminanceFlag',1);
 		}
-
-		return ['level'=>$currentLevel,'cct'=>$currentCct];
+		return ['level'=>$currentLevel,'cct'=>$currentCct,'color'=>$currentColor,'colorLevel'=>$currentColorLevel,'sceneName'=>$currentSceneName,'dayNightMode'=>$currentMode];
 	}
 }
 
@@ -198,8 +233,8 @@ if (!function_exists('adjustProperty')) {
  *
  * @return int Возвращает последний использованный ID после вставки всех команд.
  */
-if (!function_exists('createObjectMenu')) {
-	function createObjectMenu($objectName, $menuItems, $parentId = 0, $insertID = 0, $depth = 0){
+if (!function_exists('createCommandsMenu')) {
+	function createCommandsMenu($objectName, $menuItems, $parentId = 0, $insertID = 0, $depth = 0){
 		// при первом вызове получаем максимальный ID из таблицы
 		if ($depth === 0 && $insertID === 0) {
 			$data = SQLSelectOne("SELECT MAX(ID) AS MAX_ID FROM commands");
@@ -246,5 +281,20 @@ if (!function_exists('createObjectMenu')) {
 		}
 
 		return $insertID;
+	}
+}
+
+/** Удаляет меню из таблицы `commands`, привязанные к пересланному имени объекта.
+ *   deleteObjectMenu($objectName);
+ *   @param string $objectName Имя объекта, к которому привязываются команды.
+ */
+if (!function_exists('deleteCommandsMenu')) {
+	function deleteCommandsMenu($objectName) {
+		$objectName = DBSafe($objectName);
+		$commands = SQLSelect("SELECT ID FROM commands WHERE LINKED_OBJECT='{$objectName}'");
+		
+		foreach ($commands as $cmd) {
+			SQLExec("DELETE FROM commands WHERE ID=" . (int)$cmd['ID']);
+		}
 	}
 }

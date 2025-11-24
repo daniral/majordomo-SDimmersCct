@@ -5,8 +5,8 @@
  * Значения подходят для AqaraBulbZigBee. Для других устройств могут потребоваться изменения.
  *
  * Устанавливаются следующие свойства:
- *   - level: яркость лампы (0–100)
- *   - cct: цветовая температура (0–100)
+ *   - level: яркость лампы (1–100)
+ *   - cct: цветовая температура (1–100)
  *   - dayLevel / dayCct: настройки для дневного режима
  *   - nightLevel / nightCct: настройки для ночного режима
  *   - levelMinWork / levelMaxWork: минимальная и максимальная яркость
@@ -29,9 +29,9 @@
 
 $defaults = [
 	'level' => '50', 'cct' => '50',
-    'dayLevel' => '100', 'dayCct' => '0',
+    'dayLevel' => '100', 'dayCct' => '1',
     'nightLevel' => '30', 'nightCct' => '100',
-    'levelMinWork' => '0', 'levelMaxWork' => '254',
+    'levelMinWork' => '1', 'levelMaxWork' => '254',
     'cctMinWork' => '153', 'cctMaxWork' => '370',
     'timerOff' => '45', 'presence' => '0',
     'dayBegin' => '08:00', 'nightBegin' => '18:00',

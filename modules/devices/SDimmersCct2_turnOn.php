@@ -164,12 +164,6 @@
 // --- Дефолтные свойства
 $this->callMethod('byDefault');
 
-// --- Если level=0, выключаем
-if (($params['level'] ?? 1) == 0) {
-  $this->callMethod('turnOff');
-  return;
-}
-
 $level = $params['level'] ?? null;
 $cct = $params['cct'] ?? null;
 $levelSaved = $this->getProperty('levelSaved');
