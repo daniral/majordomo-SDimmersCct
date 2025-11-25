@@ -7,20 +7,20 @@
  * 
  * PROPERTIES:
  * 
- * @property int    $level            Яркость (1–100)
+ * @property int    $level            Яркость (0–100)
  * @property int    $levelWork        Рабочая яркость
- * @property int    $levelSaved       Сохраненная яркость (1–100)
+ * @property int    $levelSaved       Сохраненная яркость (0–100)
  * @property int    $levelMaxWork     Максимальная рабочая яркость
  * @property int    $levelMinWork     Минимальная рабочая яркость
- * @property int    $cct              Уровень температуры (1–100)
+ * @property int    $cct              Уровень температуры (0–100)
  * @property int    $cctWork          Рабочая теплота
- * @property int    $cctSaved         Сохраненная теплота (1–100)
+ * @property int    $cctSaved         Сохраненная теплота (0–100)
  * @property int    $cctMaxWork       Максимальная рабочая теплота
  * @property int    $cctMinWork       Минимальная рабочая теплота
  * @property int    $dayLevel         Уровень яркости днем (1–100)
  * @property int    $nightLevel       Уровень яркости ночью (1–100)
- * @property int    $dayCct           Уровень температуры днем (1–100)
- * @property int    $nightCct         Уровень температуры ночью (1–100)
+ * @property int    $dayCct           Уровень температуры днем (0–100)
+ * @property int    $nightCct         Уровень температуры ночью (0–100)
  * @property int    $autoOnOff        Автовключение (1 – включено, 0 – отключено)
  * @property int    $timerOff         Выключить через (сек). 0 – не выключать
  * @property int    $workingDay       Когда работать: 1 – днем, 2 – ночью, 3 – круглосуточно
@@ -68,22 +68,22 @@ $this->device_types['dimmerCct2'] = array(
 	'PARENT_CLASS' => 'SControllers',
 	'CLASS' => 'SDimmersCct2',
 	'PROPERTIES' => array(
-		'level' => array('DESCRIPTION' => 'Яркость (0<-->100)', 'ONCHANGE' => 'propertysUpdated', 'DATA_KEY' => 1,'VALIDATION_TYPE' => 1, 'VALIDATION_NUM_MIN' => 1, 'VALIDATION_NUM_MAX' => 100),
+		'level' => array('DESCRIPTION' => 'Яркость (0<-->100)', 'ONCHANGE' => 'propertysUpdated', 'DATA_KEY' => 1),
 		'levelWork' => array('DESCRIPTION' => 'Рабочая яркость.', 'ONCHANGE' => 'worksUpdated'),
-		'levelSaved' => array('DESCRIPTION' => 'Сохраненная яркость.','VALIDATION_TYPE' => 1, 'VALIDATION_NUM_MIN' => 1, 'VALIDATION_NUM_MAX' => 100),
+		'levelSaved' => array('DESCRIPTION' => 'Сохраненная яркость.'),
 		'levelMaxWork' => array('DESCRIPTION' => 'Максимальная рабочая яркость', '_CONFIG_TYPE' => 'num'),
 		'levelMinWork' => array('DESCRIPTION' => 'Минимальная рабочая яркость', '_CONFIG_TYPE' => 'num'),
 
 		'cct' => array('DESCRIPTION' => 'Уровень температуры: (0-100)', 'ONCHANGE' => 'propertysUpdated', 'DATA_KEY' => 1),
 		'cctWork' => array('DESCRIPTION' => 'Рабочая теплота.', 'ONCHANGE' => 'worksUpdated'),
-		'cctSaved' => array('DESCRIPTION' => 'Сохраненная теплота.','VALIDATION_TYPE' => 1, 'VALIDATION_NUM_MIN' => 1, 'VALIDATION_NUM_MAX' => 100),
+		'cctSaved' => array('DESCRIPTION' => 'Сохраненная теплота.'),
 		'cctMaxWork' => array('DESCRIPTION' => 'Максимальная рабочая теплота', '_CONFIG_TYPE' => 'num'),
 		'cctMinWork' => array('DESCRIPTION' => 'Минимальная рабочая теплота', '_CONFIG_TYPE' => 'num'),
 
-		'dayLevel' => array('DESCRIPTION' => 'Уровень яркости днем', '_CONFIG_TYPE' => 'num','VALIDATION_TYPE' => 1, 'VALIDATION_NUM_MIN' => 1, 'VALIDATION_NUM_MAX' => 100),
-		'nightLevel' => array('DESCRIPTION' => 'Уровень яркости ночью', '_CONFIG_TYPE' => 'num','VALIDATION_TYPE' => 1, 'VALIDATION_NUM_MIN' => 1, 'VALIDATION_NUM_MAX' => 100),
-		'dayCct' => array('DESCRIPTION' => 'Уровень температуры днем', '_CONFIG_TYPE' => 'num','VALIDATION_TYPE' => 1, 'VALIDATION_NUM_MIN' => 1, 'VALIDATION_NUM_MAX' => 100),
-		'nightCct' => array('DESCRIPTION' => 'Уровень температуры ночью', '_CONFIG_TYPE' => 'num','VALIDATION_TYPE' => 1, 'VALIDATION_NUM_MIN' => 1, 'VALIDATION_NUM_MAX' => 100),
+		'dayLevel' => array('DESCRIPTION' => 'Уровень яркости днем', '_CONFIG_TYPE' => 'num'),
+		'nightLevel' => array('DESCRIPTION' => 'Уровень яркости ночью', '_CONFIG_TYPE' => 'num'),
+		'dayCct' => array('DESCRIPTION' => 'Уровень температуры днем', '_CONFIG_TYPE' => 'num'),
+		'nightCct' => array('DESCRIPTION' => 'Уровень температуры ночью', '_CONFIG_TYPE' => 'num'),
 		'autoOnOff' => array('DESCRIPTION' => 'Автовключение','_CONFIG_TYPE'=>'select','_CONFIG_OPTIONS'=>'1=Включено,0=Отключено'),
 		'timerOff' => array('DESCRIPTION' => 'Выключить через(сек). 0-не выключать', '_CONFIG_TYPE' => 'num'),
 		'workingDay' => array('DESCRIPTION' => 'Включать','_CONFIG_TYPE'=>'select','_CONFIG_OPTIONS'=>'1=Днём,2=Ночью,3=Круглосуточно'),

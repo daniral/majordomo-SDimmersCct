@@ -10,7 +10,7 @@
  *   - 'warm'
  *   - 'warmest'
  *
- *  callMethod('имя объекта.setCct', array("value"=>1--100));
+ *  callMethod('имя объекта.setCct', array("value"=>0--100));
  *  callMethod('имя объекта.setCct', array("value"=>'coolest'));
  * 
  * @param array $params Ассоциативный массив параметров,

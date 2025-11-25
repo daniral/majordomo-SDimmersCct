@@ -52,4 +52,3 @@ $this->setProperty($targetProperty, $newValue, 'worksUpdated');
 if ($targetProperty === 'cct' && !$status) {
     $this->setProperty('level', $this->getProperty('levelSaved') ?? 100, 'worksUpdated');
 }
-

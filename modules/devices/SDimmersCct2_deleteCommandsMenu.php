@@ -6,4 +6,4 @@
  * команды по SUB_LIST (рекурсивно).
 */
 
-$this->callMethod('createCommandsMenu', array('delete'));
+$this->callMethod('createCommandsMenu', array("value"=>'delete'));

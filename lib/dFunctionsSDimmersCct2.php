@@ -272,7 +272,7 @@ if (!function_exists('createCommandsMenu')) {
 			// если есть подменю — рекурсия
 			if (!empty($item[12]) && is_array($item[12])) {
 				$firstChildId = $insertID + 1;
-				$insertID = createObjectMenu($objectName, $item[12], $Record['ID'], $insertID, $depth + 1);
+				$insertID = createCommandsMenu($objectName, $item[12], $Record['ID'], $insertID, $depth + 1);
 				$lastChildId = $insertID;
 
 				// обновляем SUB_LIST у родителя
@@ -286,8 +286,7 @@ if (!function_exists('createCommandsMenu')) {
 	}
 }
 
-/**
- * Удаляет команды меню по структуре $menuItems,
+/** Удаляет команды меню по структуре $menuItems,
  * используя TITLE и LINKED_OBJECT, включая вложенные
  * команды по SUB_LIST (рекурсивно).
  *
@@ -296,7 +295,6 @@ if (!function_exists('createCommandsMenu')) {
  * @param string $objectName
  * @param array  $menuItems
  */
-
 if (!function_exists('deleteCommandsMenu')) {
 	function deleteCommandsMenu($objectName, $menuItems)
 	{
