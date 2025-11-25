@@ -300,43 +300,54 @@ if (!function_exists('createCommandsMenu')) {
 if (!function_exists('deleteCommandsMenu')) {
 	function deleteCommandsMenu($objectName, $menuItems)
 	{
-		foreach ($menuItems as $item) {
+		$conditions = [];
+		$stack = $menuItems;
+		// 1. Сбор условий TITLE + LINKED_OBJECT
+		while (!empty($stack)) {
+			$item = array_pop($stack);
 			$title = $item[0] ?? '';
 			$linkedObject = $item[1] ?: $objectName;
 			if ($title !== '') {
-				$titleSafe = DBSafe($title);
-				$objectSafe = DBSafe($linkedObject);
-				// ищем команду(ы) для удаления
-				$records = SQLSelect("SELECT ID, SUB_LIST FROM commands
-									WHERE TITLE='{$titleSafe}'
-									AND LINKED_OBJECT='{$objectSafe}'");
-				foreach ($records as $rec) {
-					$id = (int)$rec['ID'];
-					// удаляем дочерние команды
-					if (!empty($rec['SUB_LIST'])) {
-						$childIds = explode(',', $rec['SUB_LIST']);
-						foreach ($childIds as $childId) {
-							$childId = (int)$childId;
-							// получаем данные подкоманды для рекурсивного удаления
-							$child = SQLSelectOne("SELECT ID, SUB_LIST FROM commands WHERE ID={$childId}");
-							if ($child) {
-								// рекурсивное удаление подкоманды
-								deleteCommandsMenu($objectName, [
-									[$titleSafe, $objectSafe] // фиктивная структура для рекурсии
-								]);
-								// удаляем саму подкоманду
-								SQLExec("DELETE FROM commands WHERE ID={$childId}");
-							}
-						}
-					}
-					// удаляем саму команду
-					SQLExec("DELETE FROM commands WHERE ID={$id}");
+				$conditions[] = sprintf(
+					"(TITLE='%s' AND LINKED_OBJECT='%s')",
+					DBSafe($title),
+					DBSafe($linkedObject)
+				);
+			}
+			// добавляем подменю в стек
+			if (!empty($item[12]) && is_array($item[12])) {
+				foreach ($item[12] as $child) {
+					$stack[] = $child;
 				}
 			}
-			// если есть вложенные пункты — обрабатываем их
-			if (!empty($item[12]) && is_array($item[12])) {
-				deleteCommandsMenu($objectName, $item[12]);
+		}
+		// если нет условий — нечего удалять
+		if (empty($conditions)) {
+			return;
+		}
+		// 2. Получаем список ID команд + SUB_LIST
+		$where = implode(" OR ", $conditions);
+		$rows = SQLSelect("SELECT ID, SUB_LIST FROM commands WHERE {$where}");
+		if (empty($rows)) {
+			return;
+		}
+		// 3. Собираем все ID для удаления (сам пункт + его дети)
+		$idsToDelete = [];
+		foreach ($rows as $r) {
+			$id = (int)$r['ID'];
+			$idsToDelete[$id] = $id;
+			if (!empty($r['SUB_LIST'])) {
+				$children = explode(',', $r['SUB_LIST']);
+				foreach ($children as $childId) {
+					$childId = (int)$childId;
+					if ($childId > 0) {
+						$idsToDelete[$childId] = $childId;
+					}
+				}
 			}
 		}
+		// 4. Удаляем все команды одним SQL
+		$idList = implode(',', $idsToDelete);
+		SQLExec("DELETE FROM commands WHERE ID IN ({$idList})");
 	}
 }
