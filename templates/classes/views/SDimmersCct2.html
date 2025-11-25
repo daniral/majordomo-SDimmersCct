@@ -184,7 +184,7 @@ input[type=range]::-webkit-slider-thumb:hover {
   <div class="device-details">
     <p id="dimmer%.object_id%_bright">Яркость: %.level%%</p>
     <input id="dimmerSelect%.object_id%_bright" 
-           type="range" min="0" max="100" step="1"
+           type="range" min="1" max="100" step="1"
            value="%.level%" 
            oninput="previewBrightness%.object_id%(this.value)"
            onmouseup="sendNewBrightness%.object_id%()"
@@ -192,7 +192,7 @@ input[type=range]::-webkit-slider-thumb:hover {
 
     <p id="dimmer%.object_id%_cct">Температура: %.cct%%</p>
     <input id="dimmerSelect%.object_id%_cct" 
-           type="range" min="0" max="100" step="1"
+           type="range" min="1" max="100" step="1"
            value="%.cct%" 
            oninput="previewCct%.object_id%(this.value)"
            onmouseup="sendNewCct%.object_id%()"
