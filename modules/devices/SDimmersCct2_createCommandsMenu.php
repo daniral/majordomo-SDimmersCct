@@ -21,6 +21,7 @@
  */
 
 $objectName = $this->object_title;
+$deleteMenu = $params['value'] ?? null;
 
 $menuItems = [
     // Главное меню
@@ -74,4 +75,8 @@ $menuItems = [
     ],'SDimmersCctLightLamp2.png']
 ];
 
-createCommandsMenu($objectName, $menuItems);
+if($deleteMenu === 'delete'){
+    deleteCommandsMenu($objectName, $menuItems);
+}else{
+    createCommandsMenu($objectName, $menuItems);
+}

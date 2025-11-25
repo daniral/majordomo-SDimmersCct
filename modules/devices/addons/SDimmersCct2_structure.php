@@ -53,7 +53,8 @@
  * @method void propertysUpdated()    Запускается при смене яркости, теплоты, присутствия
  * @method void worksUpdated()        Запускается при смене рабочей яркости и цвета
  * @method void byDefault()           Установить свойства по умолчанию
- * @method void commandsMenu()        Создает меню управления
+ * @method void createCommandsMenu()  Создает меню управления
+ * @method void deleteCommandsMenu()  Удаляет меню управления
  */
 
 if (SETTINGS_SITE_LANGUAGE && file_exists(ROOT . 'languages/SDimmersCct2_' . SETTINGS_SITE_LANGUAGE . '.php')) {
