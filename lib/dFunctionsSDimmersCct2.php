@@ -15,7 +15,9 @@
  * — Создает меню управления объектом рекурсивно.
  *
  * deleteCommandsMenu($objectName, $menuItems)
- * — Удаляет меню управления объектом.
+ * — Удаляет команды меню по структуре $menuItems,
+ * — используя TITLE и LINKED_OBJECT, включая вложенные
+ * — команды по SUB_LIST (рекурсивно).
  *
  *--------------------------------------------------------------------------------------------
  *| Функция             | Назначение                                                         |
@@ -299,57 +301,38 @@ if (!function_exists('deleteCommandsMenu')) {
 	function deleteCommandsMenu($objectName, $menuItems)
 	{
 		foreach ($menuItems as $item) {
-
 			$title = $item[0] ?? '';
 			$linkedObject = $item[1] ?: $objectName;
-
 			if ($title !== '') {
-
 				$titleSafe = DBSafe($title);
 				$objectSafe = DBSafe($linkedObject);
-
 				// ищем команду(ы) для удаления
 				$records = SQLSelect("SELECT ID, SUB_LIST FROM commands
 									WHERE TITLE='{$titleSafe}'
 									AND LINKED_OBJECT='{$objectSafe}'");
-
 				foreach ($records as $rec) {
-
 					$id = (int)$rec['ID'];
-
-					//
 					// удаляем дочерние команды
-					//
 					if (!empty($rec['SUB_LIST'])) {
-
 						$childIds = explode(',', $rec['SUB_LIST']);
-
 						foreach ($childIds as $childId) {
-
 							$childId = (int)$childId;
-
 							// получаем данные подкоманды для рекурсивного удаления
 							$child = SQLSelectOne("SELECT ID, SUB_LIST FROM commands WHERE ID={$childId}");
 							if ($child) {
-
 								// рекурсивное удаление подкоманды
 								deleteCommandsMenu($objectName, [
 									[$titleSafe, $objectSafe] // фиктивная структура для рекурсии
 								]);
-
 								// удаляем саму подкоманду
 								SQLExec("DELETE FROM commands WHERE ID={$childId}");
 							}
 						}
 					}
-
-					//
 					// удаляем саму команду
-					//
 					SQLExec("DELETE FROM commands WHERE ID={$id}");
 				}
 			}
-
 			// если есть вложенные пункты — обрабатываем их
 			if (!empty($item[12]) && is_array($item[12])) {
 				deleteCommandsMenu($objectName, $item[12]);
