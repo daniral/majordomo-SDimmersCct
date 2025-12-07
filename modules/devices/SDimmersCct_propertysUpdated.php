@@ -18,8 +18,6 @@
  *     'OLD_VALUE' => mixed Старое значение
  * ]
  */
-// --- Дефолтные свойства
-$this->callMethod('byDefault');
 
 if ($this->getProperty('level') === '') $this->setProperty('level', '50');
 if ($this->getProperty('levelMinWork') === '') $this->setProperty('levelMinWork', '0');
