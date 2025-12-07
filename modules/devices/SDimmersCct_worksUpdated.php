@@ -39,5 +39,3 @@ if ($property == 'cctWork' && !$this->getProperty('status')){
 	$this->setProperty('level', $this->getProperty('levelSaved') ?? 100);
 	
 }
-
-if(!$this->getProperty('status') && $newValue > 0) $this->setProperty('status', 1);
