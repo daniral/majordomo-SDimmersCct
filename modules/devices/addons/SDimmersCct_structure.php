@@ -39,26 +39,27 @@ $this->device_types['dimmerCct'] = array(
 	'PARENT_CLASS' => 'SControllers',
 	'CLASS' => 'SDimmersCct',
 	'PROPERTIES' => array(
-		'level' => array('DESCRIPTION' => 'Яркость (1-100)', 'ONCHANGE' => 'propertysUpdated', 'DATA_KEY' => 1),
+		'level' => array('DESCRIPTION' => 'Яркость (0-100)', 'ONCHANGE' => 'propertysUpdated', 'DATA_KEY' => 1),
 		'levelWork' => array('DESCRIPTION' => 'Рабочая яркость.', 'ONCHANGE' => 'worksUpdated'),
 		'levelSaved' => array('DESCRIPTION' => 'Сохраненная яркость.'),
-		'cct' => array('DESCRIPTION' => 'Температура (1-100)', 'ONCHANGE' => 'propertysUpdated', 'DATA_KEY' => 1),
-		'cctWork' => array('DESCRIPTION' => 'Рабочая теплота.', 'ONCHANGE' => 'worksUpdated'),
-		'cctSaved' => array('DESCRIPTION' => 'Сохраненная теплота.'),
 		'levelMaxWork' => array('DESCRIPTION' => 'Максимальная рабочая яркость', '_CONFIG_TYPE' => 'num'),
 		'levelMinWork' => array('DESCRIPTION' => 'Минимальная рабочая яркость', '_CONFIG_TYPE' => 'num'),
+
+		'cct' => array('DESCRIPTION' => 'Температура (0-100)', 'ONCHANGE' => 'propertysUpdated', 'DATA_KEY' => 1),
+		'cctWork' => array('DESCRIPTION' => 'Рабочая теплота.', 'ONCHANGE' => 'worksUpdated'),
+		'cctSaved' => array('DESCRIPTION' => 'Сохраненная теплота.'),
 		'cctMaxWork' => array('DESCRIPTION' => 'Максимальная рабочая теплота', '_CONFIG_TYPE' => 'num'),
 		'cctMinWork' => array('DESCRIPTION' => 'Минимальная рабочая теплота', '_CONFIG_TYPE' => 'num'),
 	),
 	'METHODS' => array(
 		'setLevel' => array('DESCRIPTION' => 'Установить уровень яркости.', '_CONFIG_SHOW' => 1, '_CONFIG_REQ_VALUE' => 1),
-		'setCct' => array('DESCRIPTION' => 'Установить уровень температуры.', '_CONFIG_SHOW' => 1, '_CONFIG_REQ_VALUE' => 1),
 		'levelUp' => array('DESCRIPTION' => 'Увеличить уровень яркости.', '_CONFIG_SHOW' => 1, '_CONFIG_REQ_VALUE' => 1),
 		'levelDown' => array('DESCRIPTION' => 'Уменьшить уровень яркости.', '_CONFIG_SHOW' => 1, '_CONFIG_REQ_VALUE' => 1),
+		'setCct' => array('DESCRIPTION' => 'Установить уровень температуры.', '_CONFIG_SHOW' => 1, '_CONFIG_REQ_VALUE' => 1),
 		'cctUp' => array('DESCRIPTION' => 'Увеличить уровень температуры.', '_CONFIG_SHOW' => 1, '_CONFIG_REQ_VALUE' => 1),
 		'cctDown' => array('DESCRIPTION' => 'Уменьшить уровень температуры.', '_CONFIG_SHOW' => 1, '_CONFIG_REQ_VALUE' => 1),
+
 		'propertysUpdated' => array('DESCRIPTION' => 'Запускается при смене яркости или температуры.'),
 		'worksUpdated' => array('DESCRIPTION' => 'Запускается при смене рабочей яркости или температуры.'),
-		'byDefault' => array('DESCRIPTION' => 'Установить свойства по умолчанию.'),
 	),
 );
