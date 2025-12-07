@@ -23,4 +23,4 @@
 $cct = $params['cct'] ?? $params['value'] ?? null;
 if ($cct === null) return;
 
-$this->setProperty('cct', $lecctvel, 'setLevelCct');
+$this->setProperty('cct', $cct, 'setLevelCct');
