@@ -50,7 +50,7 @@ if ($minWork == $maxWork || $source === 'worksUpdated' || $value === null) retur
 
 //Сохраняем, если значение действительно изменилось
 if ($value != $this->getProperty($property)) 
-   $this->setProperty($property, $value, 'worksUpdated');
+	$this->setProperty($property, $value, 'worksUpdated');
 
 if ($property === 'level' && $value <= 0) {
 	$this->callMethod('turnOff');
@@ -59,7 +59,6 @@ if ($property === 'level' && $value <= 0) {
 
 // Вычисляем рабочее значение в рамках диапазона
 $workValue = (int)round($minWork + ($maxWork - $minWork) * $value / 100);
-
 // Устанавливаем вычисленное рабочее значение
 $this->setProperty($property . 'Work', $workValue, 'propertysUpdated');
 $this->setProperty($property . 'Saved', $value);
@@ -68,66 +67,4 @@ if ($property=='cct' && !$status) {
 	$this->setProperty('level', $this->getProperty('levelSaved') ?? 100, 'propertysUpdated');
 }
 
-if(!$status) $this->setProperty('status', 1);
-
-
-
-
-
-
-
-
-
-
-// $status   = $this->getProperty('status');
-// $source   = strtok($params['SOURCE'], " ");
-// $property = $params['PROPERTY'];
-// $value = $params['NEW_VALUE'] ?? null;
-
-// switch ($property) {
-//     case 'level':
-//         $minWork = $this->getProperty('levelMinWork');
-//         $maxWork = $this->getProperty('levelMaxWork');
-//         break;
-
-//     case 'cct':
-//         $presets = [
-// 			'coolest' => 1,
-// 			'cool'    => 33,
-// 			'warm'    => 66,
-// 			'warmest' => 100,
-// 		];
-//         if (isset($presets[$value])) {
-//             $value = $presets[$value];
-//         }
-//         $minWork = $this->getProperty('cctMinWork');
-//         $maxWork = $this->getProperty('cctMaxWork');
-//         break;
-
-//     default:
-//         return;
-// }
-
-// // Проверяем диапазон и источник
-// if ($minWork == $maxWork || $source === 'worksUpdated') return;
-
-// $value = normalizeRange($value ?? null,1);
-// if ($value === null) return;
-
-// // Сохраняем, если значение вышло за пределы или отличается от текущего
-// if ($value != ($params['OLD_VALUE'] ?? 0) && $value != $this->getProperty($property))
-//         $this->setProperty($property, $value, 'worksUpdated');
-
-// $this->setProperty($property . 'Saved', $value);
-	
-// if ($property=='cct' && !$status) {
-// 	$this->setProperty('level', $this->getProperty('levelSaved') ?? 100, 'propertysUpdated');
-// }
-
-// // Вычисляем рабочее значение в рамках диапазона
-// $workValue = round($minWork + ($maxWork - $minWork) * $value / 100);
-
-// // Устанавливаем рабочее значение
-// $this->setProperty($property . 'Work', $workValue, 'propertysUpdated');
-
-// if(!$status) $this->setProperty('status', 1);
+if(!$this->getProperty('status') && $value > 0) $this->setProperty('status', 1);
