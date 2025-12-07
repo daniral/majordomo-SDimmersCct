@@ -11,38 +11,31 @@
  *     'NEW_VALUE' => int,    // новое значение
  * ]
  */
+//
+
+
+// --- Дефолтные свойства
+$this->callMethod('byDefault');
 
 $source   = strtok($params['SOURCE'], ' ');
 $property = $params['PROPERTY'];
 $maxWork = ($property=='levelWork') ? $this->getProperty('levelMaxWork') : $this->getProperty('cctMaxWork');
 $minWork = ($property=='levelWork') ? $this->getProperty('levelMinWork') : $this->getProperty('cctMinWork');
 $workValue = normalizeRange($params['NEW_VALUE'], $minWork, $maxWork, 'number');
-
-// Проверяем диапазон и источник
-if ($minWork == $maxWork || $source === 'propertysUpdated' || $workValue === null) return;
-
-if ($workValue <= 0 && $property === 'levelWork') {
-	$this->callMethod('turnOff');
-	return;
-}
-
-//$this->setProperty('flag', 1);
-
 // Пересчитываем значение в проценты (0–100)
 $value = (int)round(max(0, min(100, ($workValue - $minWork) / ($maxWork - $minWork) * 100)));
 
+// Проверяем диапазон, источник, данные
+if ($minWork == $maxWork || $source == 'propertysUpdated' || $workValue === null || $value == $this->getProperty(str_replace('Work', '', $property))) return;
+
 // Устанавливаем вычисленное значение
 $this->setProperty(str_replace('Work', '', $property), $value, 'worksUpdated');
-$this->setProperty(str_replace('Work', '', $property).'Saved', $value);
+if($value > 0 || $property != 'levelWork') $this->setProperty(str_replace('Work', '', $property).'Saved', $value);
 
 // При изменении CCT и выключенном статусе восстанавливаем уровень яркости
 if ($property === 'cctWork' && !$this->getProperty('status')) {
     $this->setProperty('level', $this->getProperty('levelSaved') ?? 100, 'worksUpdated');
 }
-
-if(!$this->getProperty('status') && $value > 0)
-	$this->setProperty('status', 1);
-
 
 
 

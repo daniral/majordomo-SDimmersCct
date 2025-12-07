@@ -21,6 +21,10 @@
  * ]
  */
 
+
+// --- Дефолтные свойства
+$this->callMethod('byDefault');
+
 $source   = strtok($params['SOURCE'], ' ');
 $property = $params['PROPERTY'];
 $maxWork = ($property=='level') ? $this->getProperty('levelMaxWork') : $this->getProperty('cctMaxWork');
