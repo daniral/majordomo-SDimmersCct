@@ -64,7 +64,7 @@ if (SETTINGS_SITE_LANGUAGE && file_exists(ROOT . 'languages/SDimmersCct2_' . SET
 }
 
 $this->device_types['dimmerCct2'] = array(
-	'TITLE' => 'Освещение2(Яркость,Температура)',
+	'TITLE' => 'Освещение(Яркость,Температура) - 2',
 	'PARENT_CLASS' => 'SControllers',
 	'CLASS' => 'SDimmersCct2',
 	'PROPERTIES' => array(

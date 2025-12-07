@@ -162,16 +162,17 @@ if (($params['level'] ?? 1) == 0) {
   return;
 }
 
-$level = $params['level'] ?? null;
-$cct = $params['cct'] ?? null;
 $levelSaved = $this->getProperty('levelSaved');
 $cctSaved = $this->getProperty('cctSaved');
 $autoMode = ($params['autoMode'] ?? 0) == 1;
 
+$level = normalizeRange($params['level'], 0, 100, 'number') ?? (!$autoMode ? ($levelSaved ?? 100) : null);
+$cct = normalizeRange($params['cct'], 0, 100, 'number') ?? (!$autoMode ? ($cctSaved ?? 100) : null);
+
 // --- Обычный режим (без авто)
 if (!$autoMode) {
-  $this->setProperty('level', $level ?? $levelSaved ?? 100, 'noAutoMode');
-  $this->setProperty('cct', $cct ?? $cctSaved ?? 0, 'noAutoMode');
+    $this->setProperty('level', $level, 'noAutoMode');
+    $this->setProperty('cct', $cct, 'noAutoMode');
 }
 
 // --- Авто режим 
