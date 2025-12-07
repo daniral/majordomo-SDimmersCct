@@ -59,10 +59,15 @@ if ($value <= 0 && $property === 'level') {
 }
 
 // Вычисляем рабочее значение в рамках диапазона
-$workValue = round($minWork + ($maxWork - $minWork) * $value / 100);
+$workValue = (int)round($minWork + ($maxWork - $minWork) * $value / 100);
 
 // Устанавливаем вычисленное рабочее значение
 $this->setProperty($property . 'Work', $workValue, 'propertysUpdated');
+
+// При изменении CCT и выключенном статусе восстанавливаем уровень яркости
+if ($property === 'cct' && !$this->getProperty('status')) {
+    $this->setProperty('level', $this->getProperty('levelSaved') ?? 100, 'worksUpdated');
+}
 
 if ($source !== 'autoMode'){
 	$this->setProperty('flag', 1);
