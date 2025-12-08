@@ -20,7 +20,13 @@
  *     'OLD_VALUE' => mixed Старое значение
  * ]
  */
+//
 
+
+// --- Дефолтные свойства
+$this->callMethod('byDefault');
+
+// --- Обработка свойств
 $source   = strtok($params['SOURCE'], ' ');
 $property = $params['PROPERTY'];
 $maxWork = ($property=='level') ? $this->getProperty('levelMaxWork') : $this->getProperty('cctMaxWork');
