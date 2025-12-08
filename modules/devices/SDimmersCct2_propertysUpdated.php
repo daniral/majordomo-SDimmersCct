@@ -58,7 +58,7 @@ if ($property === 'presence') {
     }
     return;
 }
-
+//
 if ($value <= 0 && $property === 'level') {
 	$this->callMethod('turnOff');
 	return;
