@@ -152,6 +152,8 @@
  *
  * @return void
 */
+//
+
 
 // --- Дефолтные свойства
 $this->callMethod('byDefault');
@@ -162,10 +164,11 @@ if (($params['level'] ?? 1) == 0) {
   return;
 }
 
+// --- Получаем сохранённые значения и авто-режим
 $levelSaved = $this->getProperty('levelSaved');
 $cctSaved = $this->getProperty('cctSaved');
 $autoMode = ($params['autoMode'] ?? 0) == 1;
-
+// --- Нормализуем входящие параметры
 $level = normalizeRange($params['level'], 0, 100, 'number') ?? (!$autoMode ? ($levelSaved ?? 100) : null);
 $cct = normalizeRange($params['cct'], 0, 100, 'number') ?? (!$autoMode ? ($cctSaved ?? 100) : null);
 
