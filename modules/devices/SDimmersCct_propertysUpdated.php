@@ -19,6 +19,7 @@
  * ]
  */
 
+// --- Дефолтные свойства
 if ($this->getProperty('level') === '') $this->setProperty('level', '50');
 if ($this->getProperty('levelMinWork') === '') $this->setProperty('levelMinWork', '0');
 if ($this->getProperty('levelMaxWork') === '') $this->setProperty('levelMaxWork', '254');
